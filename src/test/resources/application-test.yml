@@ -1,0 +1,33 @@
+spring:
+  # [Datasource]
+  datasource:
+    url: jdbc:h2:mem:test_db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # [h2]
+  h2:
+    console:
+      enabled: true # H2 Database Console 접속 여부 설정
+      path: /h2-console # H2 Database Console 접속 URL 설정 : localhost:8080/h2-console
+
+  # [JPA]
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # create auto ddl script 옵션 create-drop : application 기동 시점에 Entity를 기준으로 Table Create 후 Application 종료 시점에 Drop
+      properties:
+        hibernate:
+          format_sql: true
+          use_sql_comments: true
+          show_sql: true
+
+---
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace # Query Parameter 출력
