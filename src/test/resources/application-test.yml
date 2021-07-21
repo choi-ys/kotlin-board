@@ -22,6 +22,25 @@ spring:
           use_sql_comments: true
           show_sql: true
 
+  # [Redis]
+  redis:
+    host: localhost
+    port: 6379
+
+  # [Mail]
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: project.log.062@gmail.com
+    password: cqlsjvvodubdbavo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+
 ---
 logging:
   level:
