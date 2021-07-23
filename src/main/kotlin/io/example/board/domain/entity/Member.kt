@@ -1,5 +1,6 @@
 package io.example.board.domain.entity
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -19,13 +20,6 @@ import javax.persistence.*
     allocationSize = 1
 )
 data class Member(
-    @Id
-    @GeneratedValue(
-        strategy = GenerationType.IDENTITY,
-        generator = "MEMBER_ENTITY_SEQ_GENERATOR"
-    )
-    @Column(name = "id", nullable = false, length = 50)
-    val id: Long,
 
     @Column(name = "name", nullable = false, length = 15)
     var name: String,
@@ -38,7 +32,30 @@ data class Member(
 
     @Column(name = "nickname", nullable = false, length = 20)
     var nickname: String
+
 ){
+
+    @Id
+    @GeneratedValue(
+        strategy = GenerationType.IDENTITY,
+        generator = "MEMBER_ENTITY_SEQ_GENERATOR"
+    )
+    @Column(name = "id", nullable = false, length = 50)
+    val id: Long = 0L
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+        name = "member_status_tb",
+        joinColumns = [JoinColumn(
+            name = "id",
+            foreignKey = ForeignKey(name = "MEMBER_STATUS_TB_MEMBER_ID_FOREIGN_KEY")
+        )]
+    )
+    @Enumerated(
+        EnumType.STRING
+    )
+    @Column(name = "status", nullable = false, length = 20)
+    val roles: Set<MemberStatus> = Collections.singleton(MemberStatus.UNCERTIFIED)
 
     fun updateName(newName: String){
         this.name = newName
