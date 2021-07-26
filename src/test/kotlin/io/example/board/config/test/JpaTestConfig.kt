@@ -1,6 +1,5 @@
-package io.example.board.config
+package io.example.board.config.test
 
-import io.example.board.config.base.BaseTestAnnotations
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import javax.persistence.EntityManager

@@ -1,4 +1,4 @@
-package io.example.board.config.base
+package io.example.board.config.test
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.MethodOrderer
