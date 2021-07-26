@@ -2,6 +2,7 @@ Test 관련 사항 정리
 ===
 
 - [jUnit5](https://donghyeon.dev/junit/2021/04/11/JUnit5-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C/)
+- [jUnit5](https://beomseok95.tistory.com/303)
 - [Junit5의 핵심 기능 소개 및 활용 예제](https://theheydaze.tistory.com/218)
 - [jUnit5을 이응한 DCI 구조의 계층형 Test Case 작성하기](https://johngrib.github.io/wiki/junit5-nested/)
 - [Mock객체의 필요성](https://www.crocus.co.kr/1555)
@@ -16,6 +17,7 @@ Test 관련 사항 정리
 - [테스트 -> 통합 vs 단위 : #1설계](https://goddaehee.tistory.com/209)
 - [테스트 -> 통합 vs 단위 : #2단위테스트](https://goddaehee.tistory.com/212?category=367461)
 - [테스트 -> 통합 vs 단위 : #2통합테스트](https://goddaehee.tistory.com/211)
+- [통합테스트 환경 최적화](https://theheydaze.tistory.com/218)
 
 개발
 ===
