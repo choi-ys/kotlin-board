@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: local
+
+  # [Mail]
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: project.log.062@gmail.com
+    password: cqlsjvvodubdbavo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+
+---
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace # Query Parameter ���

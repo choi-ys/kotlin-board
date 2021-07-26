@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+---
+spring:
+  # [Datasource]
+  datasource:
+    url: jdbc:h2:mem:test_db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # [h2]
+  h2:
+    console:
+      enabled: true # H2 Database Console ���� ���� ����
+      path: /h2-console # H2 Database Console ���� URL ���� : localhost:8080/h2-console
+
+  # [JPA]
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # create auto ddl script �ɼ� create-drop : application �⵿ ������ Entity�� �������� Table Create �� Application ���� ������ Drop
+      properties:
+        hibernate:
+          format_sql: true
+          use_sql_comments: true
+          show_sql: true
+
+  # [Redis]
+  redis:
+    host: localhost
+    port: 6379
