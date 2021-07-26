@@ -1,12 +1,15 @@
 package io.example.board.repository
 
-import io.example.board.config.JpaTestConfig
+import io.example.board.config.test.JpaTestConfig
+import io.example.board.domain.entity.MemberStatus
 import io.example.board.util.generator.MemberGenerator
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
+import java.util.*
+import kotlin.NoSuchElementException
 
 @DisplayName("Repository:Member")
 internal class MemberRepositoryTest : JpaTestConfig() {
@@ -24,8 +27,9 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         val savedMemberEntity = memberRepository.save(generatedMemberEntity)
 
         // Then
-        assertNotEquals(savedMemberEntity.id, null)
+        assertNotEquals(savedMemberEntity.id, 0L)
         assertEquals(generatedMemberEntity, savedMemberEntity)
+        assertEquals(savedMemberEntity.roles, Collections.singleton(MemberStatus.UNCERTIFIED))
     }
 
     @Test
@@ -36,10 +40,10 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         flushAndClear()
 
         // When
-        val selectedMemberEntity = memberRepository.findByIdOrNull(savedMemberEntity.id)
+        val selectedMemberEntity = memberRepository.findById(savedMemberEntity.id).orElseThrow()
 
         // Then
-        assertEquals(savedMemberEntity.id, selectedMemberEntity!!.id)
+        assertEquals(savedMemberEntity.id, selectedMemberEntity.id)
     }
 
     @Test
@@ -54,10 +58,10 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         flushAndClear()
 
         // When
-        val selectedMemberEntity = memberRepository.findByIdOrNull(savedMemberEntity.id)
+        val selectedMemberEntity = memberRepository.findById(savedMemberEntity.id).orElseThrow()
 
         // Then
-        assertEquals(selectedMemberEntity!!.name, newName)
+        assertEquals(selectedMemberEntity.name, newName)
     }
 
     @Test
