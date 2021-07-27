@@ -5,7 +5,7 @@ import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.test.context.ActiveProfiles
 
-@ActiveProfiles("TEST")
+@ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.MethodName::class)
 @Disabled
 open class BaseTestAnnotations

@@ -8,8 +8,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
-import java.util.*
-import kotlin.NoSuchElementException
 
 @DisplayName("Repository:Member")
 internal class MemberRepositoryTest : JpaTestConfig() {
@@ -29,7 +27,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         // Then
         assertNotEquals(savedMemberEntity.id, 0L)
         assertEquals(generatedMemberEntity, savedMemberEntity)
-        assertEquals(savedMemberEntity.roles, Collections.singleton(MemberStatus.UNCERTIFIED))
+        assertEquals(savedMemberEntity.status, MemberStatus.UNCERTIFIED)
     }
 
     @Test

@@ -1,23 +1,32 @@
 package io.example.board.service
 
+import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.dto.response.SignupResponse
+import io.example.board.domain.entity.MailCache
 import io.example.board.domain.entity.Member
+import io.example.board.domain.entity.MemberStatus
+import io.example.board.repository.MailCacheRepository
 import io.example.board.repository.MemberRepository
+import mu.KotlinLogging
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
+
+private val logger = KotlinLogging.logger {  }
 
 @Service
 @Transactional(readOnly = true)
 class MemberService(
    private val memberRepository: MemberRepository,
-   private val passwordEncoder: PasswordEncoder
+   private val passwordEncoder: PasswordEncoder,
+   private val mailService: MailService,
+   private val mailCacheRepository: MailCacheRepository
 ) {
 
     /**
-     * 회원 가입 요청
+     * 회원 가입
      * @return 가입 완료된 회원 정보
      * @apiNote 처리내용
      * <ul>
@@ -31,21 +40,44 @@ class MemberService(
             throw IllegalArgumentException("이미 존재하는 이메일 입니다.")
         }
 
-        var member: Member = Member(
-            0,
-            signupRequest.name,
-            signupRequest.email,
-            passwordEncoder.encode(signupRequest.password),
-            signupRequest.nickname
+        val memberValue = Member(
+            name = signupRequest.name,
+            email = signupRequest.email,
+            password = passwordEncoder.encode(signupRequest.password),
+            nickname = signupRequest.nickname
         )
 
-        val savedMember = memberRepository.save(member)
+        var savedMember = memberRepository.save(memberValue)
 
         return SignupResponse(
-            savedMember.id,
-            savedMember.name,
-            savedMember.email,
-            savedMember.nickname
+            id = savedMember.id,
+            name = savedMember.name,
+            email = savedMember.email,
+            nickname = savedMember.nickname
         )
+    }
+
+    fun receiptCertify(id: Long) : MailCache {
+        val member = memberRepository.findById(id).orElseThrow() {
+            logger.error("요청에 해당하는 사용자가 없습니다.")
+            throw UsernameNotFoundException("요청에 해당하는 사용자가 없습니다.")
+        }
+        val certificationText = mailService.sendCertificationMail(member.email)
+        return mailCacheRepository.save(MailCache(member.email, certificationText))
+    }
+
+    fun checkCertify(memberCertifyRequest: MemberCertifyRequest) : Boolean{
+        val member = memberRepository.findById(memberCertifyRequest.id).orElseThrow(){
+            logger.error("요청에 해당하는 사용자가 없습니다.")
+            throw UsernameNotFoundException("요청에 해당하는 사용자가 없습니다.")
+        }
+        val certifyMail = mailCacheRepository.findById(memberCertifyRequest.email).orElseThrow(){
+            logger.error("인증시간이 만료되었거나, 잘못된 요청입니다. 다시 시도해주세요.")
+            throw IllegalArgumentException("인증시간이 만료되었거나, 잘못된 요청입니다. 다시 시도해주세요.")
+        }
+        if(memberCertifyRequest.certificationTest != certifyMail.certificationText) return false
+
+        member.status = MemberStatus.CERTIFIED
+        return true
     }
 }
