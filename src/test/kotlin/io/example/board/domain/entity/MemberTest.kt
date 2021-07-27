@@ -4,7 +4,6 @@ import io.example.board.util.generator.MemberGenerator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import java.util.*
 
 @DisplayName("Entity: Member")
 internal class MemberTest{
@@ -27,7 +26,7 @@ internal class MemberTest{
         assertEquals(member.email, email)
         assertEquals(member.password, password)
         assertEquals(member.nickname, nickname)
-        assertEquals(member.roles, Collections.singleton(MemberStatus.UNCERTIFIED))
+        assertEquals(member.status, MemberStatus.UNCERTIFIED)
     }
 
     @Test
@@ -52,6 +51,6 @@ internal class MemberTest{
         assertEquals(member.email, newEmail)
         assertEquals(member.password, newPassword)
         assertEquals(member.nickname, newNickname)
-        assertEquals(member.roles, Collections.singleton(MemberStatus.UNCERTIFIED))
+        assertEquals(member.status, MemberStatus.UNCERTIFIED)
     }
 }

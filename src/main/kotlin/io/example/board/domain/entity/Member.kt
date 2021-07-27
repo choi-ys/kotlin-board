@@ -43,19 +43,9 @@ data class Member(
     @Column(name = "id", nullable = false, length = 50)
     val id: Long = 0L
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
-        name = "member_status_tb",
-        joinColumns = [JoinColumn(
-            name = "id",
-            foreignKey = ForeignKey(name = "MEMBER_STATUS_TB_MEMBER_ID_FOREIGN_KEY")
-        )]
-    )
-    @Enumerated(
-        EnumType.STRING
-    )
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
-    val roles: Set<MemberStatus> = Collections.singleton(MemberStatus.UNCERTIFIED)
+    var status: MemberStatus? = MemberStatus.UNCERTIFIED
 
     fun updateName(newName: String){
         this.name = newName
