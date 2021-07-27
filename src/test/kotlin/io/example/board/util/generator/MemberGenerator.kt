@@ -1,7 +1,7 @@
 package io.example.board.util.generator
 
 import io.example.board.domain.dto.request.SignupRequest
-import io.example.board.domain.entity.Member
+import io.example.board.domain.entity.rdb.member.Member
 import org.junit.jupiter.api.Disabled
 import org.springframework.boot.test.context.TestComponent
 

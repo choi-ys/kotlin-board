@@ -1,19 +1,17 @@
 package io.example.board.service
 
-import io.example.board.config.test.MockingTestAnnotations
+import io.example.board.config.test.MockingTestConfig
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.*
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.verify
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 
 @DisplayName("Service:Mail")
-internal class MailServiceTest : MockingTestAnnotations(){
+internal class MailServiceTest : MockingTestConfig(){
 
     @Mock
     lateinit var javaMailSender: JavaMailSender

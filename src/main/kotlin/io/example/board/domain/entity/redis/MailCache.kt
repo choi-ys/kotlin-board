@@ -1,4 +1,4 @@
-package io.example.board.domain.entity
+package io.example.board.domain.entity.redis
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash

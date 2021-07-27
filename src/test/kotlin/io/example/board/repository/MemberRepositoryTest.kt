@@ -1,7 +1,7 @@
 package io.example.board.repository
 
 import io.example.board.config.test.JpaTestConfig
-import io.example.board.domain.entity.MemberStatus
+import io.example.board.domain.entity.rdb.member.MemberStatus
 import io.example.board.util.generator.MemberGenerator
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName

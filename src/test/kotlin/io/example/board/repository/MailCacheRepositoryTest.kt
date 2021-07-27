@@ -1,27 +1,22 @@
 package io.example.board.repository
 
 import io.example.board.config.redis.EmbeddedRedisConfig
-import io.example.board.config.test.BaseTestAnnotations
-import io.example.board.domain.entity.MailCache
+import io.example.board.config.test.BaseTestConfig
+import io.example.board.domain.entity.redis.MailCache
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest
 import org.springframework.context.annotation.Import
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
-import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.mail.javamail.JavaMailSender
 import java.util.*
 
 @Import(EmbeddedRedisConfig::class)
 @DataRedisTest
-//@Disabled
-internal class MailCacheRepositoryTest : BaseTestAnnotations(){
+@Disabled
+internal class MailCacheRepositoryTest : BaseTestConfig(){
 
     @Autowired
     lateinit var mailCacheRepository: MailCacheRepository

@@ -1,4 +1,4 @@
-package io.example.board.domain.entity
+package io.example.board.domain.entity.rdb.member
 
 enum class MemberStatus {
     UNCERTIFIED,

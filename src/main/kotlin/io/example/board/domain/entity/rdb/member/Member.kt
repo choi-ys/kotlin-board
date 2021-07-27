@@ -1,6 +1,5 @@
-package io.example.board.domain.entity
+package io.example.board.domain.entity.rdb.member
 
-import java.util.*
 import javax.persistence.*
 
 @Entity

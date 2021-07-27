@@ -1,5 +1,7 @@
-package io.example.board.domain.entity
+package io.example.board.domain.entity.rdb.member
 
+import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.entity.rdb.member.MemberStatus
 import io.example.board.util.generator.MemberGenerator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName

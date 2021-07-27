@@ -3,9 +3,9 @@ package io.example.board.service
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.dto.response.SignupResponse
-import io.example.board.domain.entity.MailCache
-import io.example.board.domain.entity.Member
-import io.example.board.domain.entity.MemberStatus
+import io.example.board.domain.entity.redis.MailCache
+import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.entity.rdb.member.MemberStatus
 import io.example.board.repository.MailCacheRepository
 import io.example.board.repository.MemberRepository
 import mu.KotlinLogging

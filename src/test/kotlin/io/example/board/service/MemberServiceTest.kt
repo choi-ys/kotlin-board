@@ -1,10 +1,10 @@
 package io.example.board.service
 
-import io.example.board.config.test.MockingTestAnnotations
+import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
-import io.example.board.domain.entity.MailCache
-import io.example.board.domain.entity.Member
+import io.example.board.domain.entity.redis.MailCache
+import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.repository.MailCacheRepository
 import io.example.board.repository.MemberRepository
 import io.example.board.util.generator.MemberGenerator
@@ -30,7 +30,7 @@ import java.util.*
  */
 @DisplayName("Service:Member")
 @Import(MemberGenerator::class)
-class MemberServiceTest : MockingTestAnnotations(){
+class MemberServiceTest : MockingTestConfig(){
 
     @Mock
     lateinit var passwordEncoder: PasswordEncoder
