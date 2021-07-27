@@ -8,4 +8,4 @@ import org.springframework.test.context.ActiveProfiles
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.MethodName::class)
 @Disabled
-open class BaseTestAnnotations
+open class BaseTestConfig
