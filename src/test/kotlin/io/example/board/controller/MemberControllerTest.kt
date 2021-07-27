@@ -1,5 +1,7 @@
 package io.example.board.controller
 
+import io.example.board.advice.Error
+import io.example.board.advice.CommonException
 import io.example.board.config.test.WebMvcTestConfig
 import io.example.board.domain.dto.response.SignupResponse
 import io.example.board.service.MemberService
@@ -47,10 +49,17 @@ internal class MemberControllerTest : WebMvcTestConfig(){
     @DisplayName("API:회원 가입 실패(값이 옳바르지 않은 요청)")
     fun signup_Fail_CauseInvalidArgument(){
         // Given
+        val errorMessage = "이미 존재하는 이메일 입니다."
+        given(memberService.signup(signupRequest)).willThrow(CommonException(Error(
+            signupRequest.email,
+            errorMessage
+        )))
 
         // When
+        val resultAction = this.post(SIGNUP_URL, signupRequest)
 
         // Then
+        resultAction.andDo(print())
     }
 
     @Test
