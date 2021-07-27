@@ -1,17 +1,16 @@
 package io.example.board.service
 
-import io.example.board.advice.Error
 import io.example.board.advice.CommonException
+import io.example.board.advice.Error
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.dto.response.SignupResponse
-import io.example.board.domain.entity.redis.MailCache
 import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.domain.entity.rdb.member.MemberStatus
+import io.example.board.domain.entity.redis.MailCache
 import io.example.board.repository.MailCacheRepository
 import io.example.board.repository.MemberRepository
 import mu.KotlinLogging
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

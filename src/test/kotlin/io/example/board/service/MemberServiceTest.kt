@@ -1,5 +1,6 @@
 package io.example.board.service
 
+import io.example.board.advice.CommonException
 import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
@@ -19,6 +20,7 @@ import org.mockito.Mock
 import org.springframework.context.annotation.Import
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.lang.IllegalArgumentException
 import java.util.*
 
 /**
@@ -78,10 +80,11 @@ class MemberServiceTest : MockingTestConfig(){
         given(memberRepository.existsByEmail(signupRequest.email)).willReturn(true)
 
         // When & Then
-        val expectedException = assertThrows(IllegalArgumentException::class.java) {
+        val expectedException = assertThrows(CommonException::class.java) {
             memberService.signup(signupRequest)
         }
-        assertEquals(expectedException.message, "이미 존재하는 이메일 입니다.")
+        verify(memberRepository, times(1)).existsByEmail(signupRequest.email)
+//        assertEquals(expectedException.message, "이미 존재하는 이메일 입니다.")
     }
 
     @Test
@@ -115,10 +118,11 @@ class MemberServiceTest : MockingTestConfig(){
         given(memberRepository.findById(1L)).willReturn(Optional.empty())
 
         // When & Then
-        val expectedException = assertThrows(UsernameNotFoundException::class.java) {
+        val expectedException = assertThrows(CommonException::class.java) {
             memberService.receiptCertify(1L)
         }
-        assertEquals(expectedException.message, "요청에 해당하는 사용자가 없습니다.")
+        verify(memberRepository, times(1)).findById(any(Long::class.java))
+//        assertEquals(expectedException.message, "요청에 해당하는 사용자가 없습니다.")
     }
 
     @Test
@@ -158,11 +162,11 @@ class MemberServiceTest : MockingTestConfig(){
         )
 
         // When & Then
-        val expectedException = assertThrows(UsernameNotFoundException::class.java) {
+        val expectedException = assertThrows(CommonException::class.java) {
             memberService.checkCertify(memberCertifyRequest)
         }
-        assertEquals(expectedException.message, "요청에 해당하는 사용자가 없습니다.")
         verify(memberRepository, times(1)).findById(any(Long::class.java))
+//        assertEquals(expectedException.message, "요청에 해당하는 사용자가 없습니다.")
     }
 
     @Test
@@ -180,13 +184,13 @@ class MemberServiceTest : MockingTestConfig(){
         )
 
         // When & Then
-        val expectedException = assertThrows(IllegalArgumentException::class.java) {
+        val expectedException = assertThrows(CommonException::class.java) {
             memberService.checkCertify(memberCertifyRequest)
         }
 
         verify(memberRepository, times(1)).findById(any(Long::class.java))
         verify(mailCacheRepository, times(1)).findById(member.email)
-        assertEquals(expectedException.message, "인증시간이 만료되었거나, 잘못된 요청입니다. 다시 시도해주세요.")
+//        assertEquals(expectedException.message, "인증시간이 만료되었거나, 잘못된 요청입니다. 다시 시도해주세요.")
 
     }
 }
