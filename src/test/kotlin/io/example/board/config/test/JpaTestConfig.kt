@@ -5,7 +5,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import javax.persistence.EntityManager
 
 @DataJpaTest
-class JpaTestConfig : BaseTestAnnotations() {
+class JpaTestConfig : BaseTestConfig() {
 
     @Autowired
     lateinit var entityManager: EntityManager
