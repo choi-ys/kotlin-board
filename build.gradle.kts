@@ -23,9 +23,15 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-mail") // mail-sender
     implementation("org.springframework.boot:spring-boot-starter-security") // spring-security
 
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.6")
+
     runtimeOnly("com.h2database:h2")
+    implementation("it.ozimov:embedded-redis:0.7.2") // https://github.com/ozimov/embedded-redis
+
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
