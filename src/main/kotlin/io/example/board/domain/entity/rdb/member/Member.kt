@@ -1,5 +1,6 @@
 package io.example.board.domain.entity.rdb.member
 
+import io.example.board.domain.entity.rdb.common.Auditor
 import javax.persistence.*
 
 @Entity
@@ -32,7 +33,7 @@ data class Member(
     @Column(name = "nickname", nullable = false, length = 20)
     var nickname: String
 
-){
+) : Auditor(){
 
     @Id
     @GeneratedValue(

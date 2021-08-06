@@ -23,11 +23,17 @@ internal class MemberRepositoryTest : JpaTestConfig() {
 
         // When
         val savedMemberEntity = memberRepository.save(generatedMemberEntity)
+        print(savedMemberEntity)
+        flush()
 
         // Then
         assertNotEquals(savedMemberEntity.id, 0L)
         assertEquals(generatedMemberEntity, savedMemberEntity)
         assertEquals(savedMemberEntity.status, MemberStatus.UNCERTIFIED)
+        assertNotEquals(savedMemberEntity.createdBy, null)
+        assertNotEquals(savedMemberEntity.updatedBy, null)
+        assertNotEquals(savedMemberEntity.createdDate, null)
+        assertNotEquals(savedMemberEntity.updatedDate, null)
     }
 
     @Test
