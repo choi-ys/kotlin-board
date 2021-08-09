@@ -1,5 +1,6 @@
 package io.example.board.controller
 
+import io.example.board.aspect.log.Timer
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.service.MemberService
 import mu.KotlinLogging
@@ -19,6 +20,7 @@ class MemberController(
     private val memberService: MemberService
 ) {
 
+    @Timer
     @PostMapping("signup")
     fun signup(@RequestBody signupRequest: SignupRequest) : ResponseEntity<*>{
         return ResponseEntity.ok(memberService.signup(signupRequest))
