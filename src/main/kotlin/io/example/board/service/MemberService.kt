@@ -1,7 +1,7 @@
 package io.example.board.service
 
-import io.example.board.advice.CommonException
-import io.example.board.advice.Error
+import io.example.board.aspect.exception.CommonException
+import io.example.board.aspect.exception.Error
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.dto.response.SignupResponse

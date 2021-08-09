@@ -1,4 +1,4 @@
-package io.example.board.advice
+package io.example.board.aspect.exception
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore

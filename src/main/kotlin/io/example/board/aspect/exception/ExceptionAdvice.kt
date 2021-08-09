@@ -1,4 +1,4 @@
-package io.example.board.advice
+package io.example.board.aspect.exception
 
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus

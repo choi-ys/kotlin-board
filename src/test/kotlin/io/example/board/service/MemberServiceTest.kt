@@ -1,6 +1,6 @@
 package io.example.board.service
 
-import io.example.board.advice.CommonException
+import io.example.board.aspect.exception.CommonException
 import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
@@ -18,9 +18,7 @@ import org.mockito.BDDMockito.*
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.springframework.context.annotation.Import
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
-import java.lang.IllegalArgumentException
 import java.util.*
 
 /**
