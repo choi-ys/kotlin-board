@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail") // mail-sender
     implementation("org.springframework.boot:spring-boot-starter-security") // spring-security
 
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.0") // p6spy
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.6")
 
     runtimeOnly("com.h2database:h2")

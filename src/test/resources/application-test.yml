@@ -22,6 +22,12 @@ spring:
           use_sql_comments: true
           show_sql: true
 
+  # [p6spy]
+  decorator:
+    datasource:
+      p6spy:
+        enable-logging: true # 실행 쿼리 출력 시 파라미터가 바인딩된 실행 쿼리 출력 옵션
+
   # [Redis]
   redis:
     host: localhost
