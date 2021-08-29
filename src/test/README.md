@@ -21,6 +21,7 @@ Test 관련 사항 정리
 - [통합테스트 환경 최적화](https://theheydaze.tistory.com/218)
 - [JavaMailSender를 Test하는 방법 : library and docker client](https://rieckpil.de/use-greenmail-for-spring-mail-javamailsender-junit-5-integration-tests/)
 - [JavaMailSender를 Test하는 방법 : Mocking](https://www.javatips.net/api/urlaubsverwaltung-master/src/test/java/org/synyx/urlaubsverwaltung/core/mail/MailSenderTest.java)
+- [Cleanup Your Kotlin: Writing Unit Tests](https://medium.com/@linhartos/cleanup-your-kotlin-writing-unit-tests-6041f0c32d47)
 
 개발
 ===
