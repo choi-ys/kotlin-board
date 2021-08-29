@@ -2,14 +2,17 @@ package io.example.board.repository
 
 import io.example.board.config.test.JpaTestConfig
 import io.example.board.domain.entity.rdb.member.MemberStatus
+import io.example.board.util.ApplicationContextUtil
 import io.example.board.util.generator.MemberGenerator
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
 import org.springframework.data.repository.findByIdOrNull
 
 @DisplayName("Repository:Member")
+@Import(ApplicationContextUtil::class)
 internal class MemberRepositoryTest : JpaTestConfig() {
 
     @Autowired
@@ -32,8 +35,8 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         assertEquals(savedMemberEntity.status, MemberStatus.UNCERTIFIED)
         assertNotEquals(savedMemberEntity.createdBy, null)
         assertNotEquals(savedMemberEntity.updatedBy, null)
-        assertNotEquals(savedMemberEntity.createdDate, null)
-        assertNotEquals(savedMemberEntity.updatedDate, null)
+        assertNotEquals(savedMemberEntity.createdAt, null)
+        assertNotEquals(savedMemberEntity.updatedAt, null)
     }
 
     @Test
