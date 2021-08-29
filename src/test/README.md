@@ -26,3 +26,6 @@ Test 관련 사항 정리
 개발
 ===
 - [Kotlin을 이용한 Entity 설계](https://blog.junu.dev/37)
+- [@DataJpaTest에 p6spy 적용하기](https://zgundam.tistory.com/199)
+- [Spring Data JPA, Querydsl 로깅처리. p6spy pretty하게 설정하기](https://jessyt.tistory.com/27)
+- [스프링 부트 테스트 : @DataJpaTest](https://webcoding-start.tistory.com/20)

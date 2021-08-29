@@ -1,7 +1,7 @@
 spring:
   # [Datasource]
   datasource:
-    url: jdbc:h2:mem:test_db
+    url: jdbc:h2:mem:test_db;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -16,17 +16,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop # create auto ddl script 옵션 create-drop : application 기동 시점에 Entity를 기준으로 Table Create 후 Application 종료 시점에 Drop
-      properties:
-        hibernate:
-          format_sql: true
-          use_sql_comments: true
-          show_sql: true
-
-  # [p6spy]
-  decorator:
-    datasource:
-      p6spy:
-        enable-logging: true # 실행 쿼리 출력 시 파라미터가 바인딩된 실행 쿼리 출력 옵션
 
   # [Redis]
   redis:
@@ -48,11 +37,10 @@ spring:
         debug: true
 
 ---
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: trace # Query Parameter 출력
+# [p6spy]
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true # 실행 쿼리 출력 시 파라미터가 바인딩된 실행 쿼리 출력 옵션
+      multiline: true
+      logging: slf4j

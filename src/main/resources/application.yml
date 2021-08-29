@@ -17,11 +17,11 @@ spring:
         debug: true
 
 ---
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: trace # Query Parameter ���
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: trace # Query Parameter 출력
