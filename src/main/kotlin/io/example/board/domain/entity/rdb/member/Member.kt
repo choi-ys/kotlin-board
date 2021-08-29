@@ -13,12 +13,6 @@ import javax.persistence.*
         )
     ]
 )
-@SequenceGenerator(
-    name = "MEMBER_ENTITY_SEQ_GENERATOR",
-    sequenceName = "MEMBER_ENTITY_SEQ",
-    initialValue = 1,
-    allocationSize = 1
-)
 data class Member(
 
     @Column(name = "name", nullable = false, length = 15)
@@ -36,10 +30,7 @@ data class Member(
 ) : Auditor(){
 
     @Id
-    @GeneratedValue(
-        strategy = GenerationType.IDENTITY,
-        generator = "MEMBER_ENTITY_SEQ_GENERATOR"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, length = 50)
     val id: Long = 0L
 
