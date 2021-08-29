@@ -4,6 +4,8 @@ import com.p6spy.engine.common.P6Util
 import com.p6spy.engine.logging.Category
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy
 import org.hibernate.engine.jdbc.internal.FormatStyle
+import java.time.Instant
+import java.time.LocalDateTime
 import java.util.*
 
 /**
@@ -23,7 +25,17 @@ class P6spySqlFormatConfiguration : MessageFormattingStrategy {
     ): String {
         var sql: String? = sql
         sql = formatSql(category, sql)
-        return now + "|" + elapsed + "ms|" + category + "|connection " + connectionId + "|" + P6Util.singleLine(prepared) + sql
+        return "\n -> [Meta info] : " +
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(now.toLong()), TimeZone.getDefault().toZoneId()) +
+                " | " + elapsed + "ms | connection " + connectionId +
+                " \n -> [Prepared statement]: " + P6Util.singleLine(prepared) + sql
+    }
+
+    private fun addSeparator(str: String){
+    }
+
+    private fun metaLogFormatter(vararg test: String): String {
+        return ""
     }
 
     private fun formatSql(category: String, sql: String?): String? {
@@ -38,7 +50,7 @@ class P6spySqlFormatConfiguration : MessageFormattingStrategy {
             } else {
                 FormatStyle.BASIC.formatter.format(sql)
             }
-            sql = "|\nHeFormatSql(P6Spy sql,Hibernate format):$sql"
+            sql = "\n -> [Hibernate format]: $sql"
         }
         return sql
     }
