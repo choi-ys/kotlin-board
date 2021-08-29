@@ -14,17 +14,19 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class Auditor(
 
-    @CreatedBy @Column(name = "created_by", updatable = false)
+    @CreatedBy
+    @Column(name = "created_by", updatable = false)
     var createdBy: String? = null,
 
-    @LastModifiedBy @Column(name = "updated_by")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    var createdAt: LocalDateTime? = null,
+
+    @LastModifiedBy
+    @Column(name = "updated_by")
     var updatedBy: String? = null,
 
-    @CreationTimestamp
-    @Column(name = "created_date", updatable = false)
-    var createdDate: LocalDateTime? = null,
-
     @UpdateTimestamp
-    @Column(name = "updated_date")
-    var updatedDate: LocalDateTime? = null,
+    @Column(name = "updated_at")
+    var updatedAt: LocalDateTime? = null,
 )
