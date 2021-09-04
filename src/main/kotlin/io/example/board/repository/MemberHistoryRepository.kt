@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository
  * @date : 2021-08-30 오전 12:42
  */
 interface MemberHistoryRepository : JpaRepository<MemberHistory, Long> {
+
+    fun findByMemberIdOrderByCreatedAtDesc(memberId: Long): List<MemberHistory>
 }
