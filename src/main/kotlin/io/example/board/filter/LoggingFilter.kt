@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
 private val logger = LoggerFactory.getLogger(LoggingFilter::class.java)
 
 @Component
-class LoggingFilter : Filter{
+class LoggingFilter : Filter {
 
     /**
      * httpServletRequest, httpServletResponse를 이용하여 요청/응답 객체의 buffer를 읽을 경우

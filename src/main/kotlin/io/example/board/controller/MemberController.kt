@@ -6,10 +6,13 @@ import io.example.board.service.MemberService
 import mu.KotlinLogging
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
-private val logger = KotlinLogging.logger {  }
+private val logger = KotlinLogging.logger { }
 
 @RestController
 @RequestMapping(
@@ -23,7 +26,7 @@ class MemberController(
 
     @Timer
     @PostMapping("signup")
-    fun signup(@Valid @RequestBody signupRequest: SignupRequest) : ResponseEntity<*>{
+    fun signup(@Valid @RequestBody signupRequest: SignupRequest): ResponseEntity<*> {
         return ResponseEntity.ok(memberService.signup(signupRequest))
     }
 }

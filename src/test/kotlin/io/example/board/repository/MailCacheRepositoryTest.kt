@@ -16,7 +16,7 @@ import java.util.*
 @Import(EmbeddedRedisConfig::class)
 @DataRedisTest
 @Disabled
-internal class MailCacheRepositoryTest : BaseTestConfig(){
+internal class MailCacheRepositoryTest : BaseTestConfig() {
 
     @Autowired
     lateinit var mailCacheRepository: MailCacheRepository
@@ -29,7 +29,7 @@ internal class MailCacheRepositoryTest : BaseTestConfig(){
 
     @Test
     @DisplayName("인증 메일 캐시 저장")
-    fun saveRedis(){
+    fun saveRedis() {
         // Given
         var mailCache = generateMailCache()
 
@@ -42,7 +42,7 @@ internal class MailCacheRepositoryTest : BaseTestConfig(){
         assertEquals(savedMailCache.certificationText, selectedMailCache.certificationText)
     }
 
-    private fun generateMailCache() : MailCache {
+    private fun generateMailCache(): MailCache {
         var mail = "rcn115@naver.com"
         var certificationText = UUID.randomUUID().toString()
         return MailCache(mail, certificationText)

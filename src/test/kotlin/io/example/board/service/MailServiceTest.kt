@@ -11,7 +11,7 @@ import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 
 @DisplayName("Service:Mail")
-internal class MailServiceTest : MockingTestConfig(){
+internal class MailServiceTest : MockingTestConfig() {
 
     @Mock
     lateinit var javaMailSender: JavaMailSender
@@ -21,7 +21,7 @@ internal class MailServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 인증 메일 전송")
-    fun send(){
+    fun send() {
         // Given
         var to = "rcn115@naver.com"
         val simpleMailMessage = SimpleMailMessage().also {
@@ -31,7 +31,7 @@ internal class MailServiceTest : MockingTestConfig(){
         }
 
 //        doAnswer(`when`(javaMailSender.send(simpleMailMessage))).
-            doNothing().`when`(javaMailSender).send(any(SimpleMailMessage::class.java))
+        doNothing().`when`(javaMailSender).send(any(SimpleMailMessage::class.java))
 //            doNothing().`when`(javaMailSender)
 
         // When

@@ -29,7 +29,7 @@ data class Member(
     @Column(name = "nickname", nullable = false, length = 20)
     var nickname: String
 
-) : Auditor(){
+) : Auditor() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,19 +40,19 @@ data class Member(
     @Column(name = "status", nullable = false, length = 20)
     var status: MemberStatus? = MemberStatus.UNCERTIFIED
 
-    fun updateName(newName: String){
+    fun updateName(newName: String) {
         this.name = newName
     }
 
-    fun updateEmail(newEmail: String){
+    fun updateEmail(newEmail: String) {
         this.email = newEmail
     }
 
-    fun updatePassword(newPassword: String){
+    fun updatePassword(newPassword: String) {
         this.password = newPassword
     }
 
-    fun updateNickname(newNickname: String){
+    fun updateNickname(newNickname: String) {
         this.nickname = newNickname
     }
 }

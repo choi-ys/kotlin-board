@@ -4,8 +4,8 @@ import io.example.board.aspect.exception.CommonException
 import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
-import io.example.board.domain.entity.redis.MailCache
 import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.entity.redis.MailCache
 import io.example.board.repository.MailCacheRepository
 import io.example.board.repository.MemberRepository
 import io.example.board.util.generator.MemberGenerator
@@ -30,7 +30,7 @@ import java.util.*
  */
 @DisplayName("Service:Member")
 @Import(MemberGenerator::class)
-class MemberServiceTest : MockingTestConfig(){
+class MemberServiceTest : MockingTestConfig() {
 
     @Mock
     lateinit var passwordEncoder: PasswordEncoder
@@ -49,7 +49,7 @@ class MemberServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 가입")
-    fun signup(){
+    fun signup() {
         // Given
         val signupRequest: SignupRequest = MemberGenerator.generateSignupRequest()
         val member = MemberGenerator.generateMemberEntity()
@@ -72,7 +72,7 @@ class MemberServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 가입 실패 : 이메일 중복")
-    fun signup_duplicationEmailException(){
+    fun signup_duplicationEmailException() {
         // Given
         val signupRequest = MemberGenerator.generateSignupRequest()
         given(memberRepository.existsByEmail(signupRequest.email)).willReturn(true)
@@ -87,7 +87,7 @@ class MemberServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 인증 메일 발송")
-    fun receiptCertify(){
+    fun receiptCertify() {
         // Given
         val member = MemberGenerator.generateMemberEntity()
         val certificationText = UUID.randomUUID().toString()
@@ -111,7 +111,7 @@ class MemberServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 인증 메일 발송 실패 : 존재하지 않는 회원")
-    fun receiptCertify_UsernameNotFoundException(){
+    fun receiptCertify_UsernameNotFoundException() {
         // Given
         given(memberRepository.findById(1L)).willReturn(Optional.empty())
 
@@ -125,10 +125,10 @@ class MemberServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 인증")
-    fun checkCertify(){
+    fun checkCertify() {
         // Given
         val member = MemberGenerator.generateMemberEntity()
-        val mailCache = MailCache(email=member.email, UUID.randomUUID().toString())
+        val mailCache = MailCache(email = member.email, UUID.randomUUID().toString())
         given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.of(member))
         given(mailCacheRepository.findById(member.email)).willReturn(Optional.of(mailCache))
 
@@ -149,7 +149,7 @@ class MemberServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 인증 실패 : 잘못된 요청")
-    fun checkCertify_IllegalArgumentException(){
+    fun checkCertify_IllegalArgumentException() {
         // Given
         given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.empty())
 
@@ -169,7 +169,7 @@ class MemberServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("회원 인증 실패 : 인증 만료")
-    fun checkCertify_expiredAuthenticationException(){
+    fun checkCertify_expiredAuthenticationException() {
         // Given
         val member = MemberGenerator.generateMemberEntity()
         given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.of(member))

@@ -36,15 +36,15 @@ open class MockMvcTestConfig : BaseTestConfig() {
                     request?.characterEncoding = "UTF-8"
                     response.characterEncoding = "UTF-8"
                     chain.doFilter(request, response)
-            }).build()
+                }).build()
     }
 
     @Throws(Exception::class)
     fun get(requestUrl: String): ResultActions {
         return mockMvc.perform(
             org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get(requestUrl)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
         )
     }
 

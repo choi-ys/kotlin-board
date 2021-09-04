@@ -10,16 +10,21 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @DisplayName("Controller:Member")
-internal class MemberControllerIntegrationTest : IntegrationTestConfig(){
+internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
 
     private val SIGNUP_URL = "/member/signup"
     private val signupRequest = MemberGenerator.generateSignupRequest()
-    private val signupResponse = SignupResponse(id = 1L, name = signupRequest.name, email = signupRequest.email, nickname = signupRequest.nickname)
+    private val signupResponse = SignupResponse(
+        id = 1L,
+        name = signupRequest.name,
+        email = signupRequest.email,
+        nickname = signupRequest.nickname
+    )
 
     @Test
     @DisplayName("API:회원 가입")
     @Throws(Exception::class)
-    fun signup(){
+    fun signup() {
         // When
         val resultAction = this.post(SIGNUP_URL, signupRequest)
 
@@ -34,7 +39,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig(){
 
     @Test
     @DisplayName("API:회원 가입 실패(값이 옳바르지 않은 요청)")
-    fun signup_Fail_CauseInvalidArgument(){
+    fun signup_Fail_CauseInvalidArgument() {
         // Given
         val errorMessage = "이미 존재하는 이메일 입니다."
 
@@ -47,7 +52,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig(){
 
     @Test
     @DisplayName("API:회원 가입 실패(유효하지 못한 요청)")
-    fun signup_Fail_CauseIllegalArgument(){
+    fun signup_Fail_CauseIllegalArgument() {
 
     }
 }

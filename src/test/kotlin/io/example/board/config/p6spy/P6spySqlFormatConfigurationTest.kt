@@ -13,11 +13,11 @@ import java.util.*
  * @date : 2021-08-30 오전 4:19
  */
 @DisplayName("Config:P6spySqlFormatConfiguration")
-internal class P6spySqlFormatConfigurationTest{
+internal class P6spySqlFormatConfigurationTest {
 
     @Test
     @DisplayName("[casting] Timestamp -> LocalDateTime")
-    fun castingTimestampToLocalDateTime(){
+    fun castingTimestampToLocalDateTime() {
         // Given
         val givenTimestamp = "1630264221961"
 
@@ -33,7 +33,7 @@ internal class P6spySqlFormatConfigurationTest{
 
     @Test
     @DisplayName("[casting] LocalDateTime <- Timestamp")
-    fun castingLocalDateTimeToTimestamp(){
+    fun castingLocalDateTimeToTimestamp() {
         // Given
         val givenLocalDateTime = LocalDateTime.now()
 

@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
 
-private val logger = KotlinLogging.logger {  }
+private val logger = KotlinLogging.logger { }
 
 /**
  * https://sabarada.tistory.com/106
@@ -43,7 +43,7 @@ class EmbeddedRedisConfig {
 
     private fun isRedisRunning() = isRunning(executeGrepProcessCommand(redisPort))
 
-    private fun findAvailablePort() : Int{
+    private fun findAvailablePort(): Int {
         logger.info("find another port start")
         for (port in 10000..65535) {
             val process = executeGrepProcessCommand(port)
@@ -62,7 +62,7 @@ class EmbeddedRedisConfig {
         var command: String
         var shell: Array<String>
 
-        when(os){
+        when (os) {
             OS.WINDOWS -> {
                 command = String.format("netstat -nao | find LISTEN | find %d", port);
                 shell = arrayOf("cmd.exe", "/y", "/c", command)
@@ -89,8 +89,10 @@ class EmbeddedRedisConfig {
         } catch (e: Exception) {
         }
 
-        logger.info("pid info [{}] by execute command [{}], check isRunning -> {}",
-            pidInfo, line, StringUtils.isEmpty(pidInfo.toString()))
+        logger.info(
+            "pid info [{}] by execute command [{}], check isRunning -> {}",
+            pidInfo, line, StringUtils.isEmpty(pidInfo.toString())
+        )
         return !StringUtils.isEmpty(pidInfo.toString())
     }
 

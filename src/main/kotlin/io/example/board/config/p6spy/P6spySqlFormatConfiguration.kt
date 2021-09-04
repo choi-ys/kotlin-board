@@ -1,6 +1,5 @@
 package io.example.board.config.p6spy
 
-import com.p6spy.engine.common.P6Util
 import com.p6spy.engine.logging.Category
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy
 import org.hibernate.engine.jdbc.internal.FormatStyle
@@ -27,11 +26,10 @@ class P6spySqlFormatConfiguration : MessageFormattingStrategy {
         sql = formatSql(category, sql)
         return "\n -> [Meta info] : " +
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(now.toLong()), TimeZone.getDefault().toZoneId()) +
-                " | " + elapsed + "ms | connection " + connectionId +
-                " \n -> [Prepared statement]: " + P6Util.singleLine(prepared) + sql
+                " | duration " + elapsed + "ms | connection " + connectionId + sql
     }
 
-    private fun addSeparator(str: String){
+    private fun addSeparator(str: String) {
     }
 
     private fun metaLogFormatter(vararg test: String): String {
@@ -44,7 +42,7 @@ class P6spySqlFormatConfiguration : MessageFormattingStrategy {
 
         // Only format Statement, distinguish DDL And DML
         if (Category.STATEMENT.name == category) {
-            val tmpsql = sql.trim { it <= ' ' }.toLowerCase(Locale.ROOT)
+            val tmpsql = sql.trim { it <= ' ' }.lowercase(Locale.ROOT)
             sql = if (tmpsql.startsWith("create") || tmpsql.startsWith("alter") || tmpsql.startsWith("comment")) {
                 FormatStyle.DDL.formatter.format(sql)
             } else {

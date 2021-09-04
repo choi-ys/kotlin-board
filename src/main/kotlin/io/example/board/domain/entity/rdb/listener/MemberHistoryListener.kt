@@ -12,7 +12,7 @@ import javax.persistence.PostUpdate
  * @author : choi-ys
  * @date : 2021-08-30 오전 12:37
  */
-private val logger = KotlinLogging.logger {  }
+private val logger = KotlinLogging.logger { }
 
 class MemberHistoryListener : HistoryListener {
 

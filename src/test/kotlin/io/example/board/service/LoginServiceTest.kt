@@ -18,7 +18,7 @@ import java.util.*
 
 @DisplayName("Service:Login")
 @Import(MemberGenerator::class)
-internal class LoginServiceTest : MockingTestConfig(){
+internal class LoginServiceTest : MockingTestConfig() {
 
     @Mock
     lateinit var passwordEncoder: PasswordEncoder
@@ -31,7 +31,7 @@ internal class LoginServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("로그인")
-    fun login(){
+    fun login() {
         // Given
         val member = MemberGenerator.generateMemberEntity()
         val loginRequest = LoginRequest(email = member.email, password = member.password)
@@ -51,7 +51,7 @@ internal class LoginServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("로그인 실패 : 요청에 해당하는 사용자가 없는경우")
-    fun loginFail_causeUsernameNotfound(){
+    fun loginFail_causeUsernameNotfound() {
         // Given
         val loginRequest = LoginRequest(email = "test@naver.com", password = "password")
 
@@ -64,7 +64,7 @@ internal class LoginServiceTest : MockingTestConfig(){
 
     @Test
     @DisplayName("로그인 실패 : 비밀번호가 일치하지 않는 경우")
-    fun loginFail_causePasswordNotCorrect(){
+    fun loginFail_causePasswordNotCorrect() {
         // Given
         val member = MemberGenerator.generateMemberEntity()
         val loginRequest = LoginRequest(member.email, member.password)

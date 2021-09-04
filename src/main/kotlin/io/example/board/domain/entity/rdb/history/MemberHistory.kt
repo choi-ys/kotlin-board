@@ -34,10 +34,10 @@ class MemberHistory(
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
     var status: MemberStatus?
-) : Auditor(){
+) : Auditor() {
 
     companion object {
-        fun mapFor(member: Member) : MemberHistory {
+        fun mapFor(member: Member): MemberHistory {
             return MemberHistory(
                 memberId = member.id,
                 name = member.name,

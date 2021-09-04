@@ -8,15 +8,15 @@ import java.util.*
 @Service
 class MailService(
     private val javaMailSender: JavaMailSender
-){
+) {
 
-    private fun sendMail(simpleMailMessage: SimpleMailMessage){
+    private fun sendMail(simpleMailMessage: SimpleMailMessage) {
         javaMailSender.send(simpleMailMessage)
     }
 
     // TODO MimeMessage(HTML)로 변경
     private fun createMailTemplate(
-        to:String,
+        to: String,
         title: String,
         content: String
     ) = SimpleMailMessage().also {
@@ -25,7 +25,7 @@ class MailService(
         it.setText(content)
     }
 
-    fun sendCertificationMail(email: String) : String{
+    fun sendCertificationMail(email: String): String {
         val title = "[kotlin-board] 회원 인증 메일"
         val content = UUID.randomUUID().toString()
 

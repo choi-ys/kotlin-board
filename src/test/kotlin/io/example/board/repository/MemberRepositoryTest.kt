@@ -20,7 +20,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
 
     @Test
     @DisplayName("회원 객체 저장")
-    fun save(){
+    fun save() {
         // Given
         val generatedMemberEntity = MemberGenerator.generateMemberEntity()
 
@@ -41,7 +41,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
 
     @Test
     @DisplayName("회원 객체 조회")
-    fun findById(){
+    fun findById() {
         // Given
         val savedMemberEntity = memberRepository.save(MemberGenerator.generateMemberEntity())
         flushAndClear()
@@ -55,7 +55,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
 
     @Test
     @DisplayName("회원 속성 수정")
-    fun updateByDirtyChecking(){
+    fun updateByDirtyChecking() {
         // Given
         val savedMemberEntity = memberRepository.save(MemberGenerator.generateMemberEntity())
 
@@ -73,7 +73,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
 
     @Test
     @DisplayName("회원 객체 삭제")
-    fun delete(){
+    fun delete() {
         // Given
         val savedMemberEntity = memberRepository.save(MemberGenerator.generateMemberEntity())
 

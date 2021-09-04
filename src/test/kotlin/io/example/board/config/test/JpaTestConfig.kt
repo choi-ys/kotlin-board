@@ -12,20 +12,20 @@ import javax.persistence.EntityManager
 @DataJpaTest(showSql = false)
 @ImportAutoConfiguration(DataSourceDecoratorAutoConfiguration::class)
 @Import(DataJpaAuditorConfig::class, P6spyLogMessageFormatConfiguration::class)
-class JpaTestConfig : BaseTestConfig(){
+class JpaTestConfig : BaseTestConfig() {
 
     @Autowired
     lateinit var entityManager: EntityManager
 
-    fun flush(){
+    fun flush() {
         entityManager.flush()
     }
 
-    fun clear(){
+    fun clear() {
         entityManager.clear()
     }
 
-    fun flushAndClear(){
+    fun flushAndClear() {
         flush()
         clear()
     }
