@@ -24,7 +24,7 @@ class MemberHistoryListener : HistoryListener {
 
     @PostUpdate
     override fun postUpdate(entity: Any) {
-        saveHistory(entity, EventType.PERSIST)
+        saveHistory(entity, EventType.UPDATE)
     }
 
     override fun saveHistory(entity: Any, historyEventType: EventType) {

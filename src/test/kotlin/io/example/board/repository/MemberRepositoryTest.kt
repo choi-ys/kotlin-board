@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Import
 import org.springframework.data.repository.findByIdOrNull
+import java.util.stream.Collectors
 
 @DisplayName("Repository:Member")
 @Import(ApplicationContextUtil::class)
@@ -81,11 +82,20 @@ internal class MemberRepositoryTest : JpaTestConfig() {
 
         // When
         val expected = memberRepository.findById(savedMember.id).orElseThrow()
+        val histories = memberHistoryRepository.findByMemberIdOrderByCreatedAtDesc(expected.id)
 
         // Then
         assertAll(
             { assertMember(expected, savedMember) },
-            { assertEquals(expected.name, newName) }
+            { assertEquals(expected.name, newName) },
+            {
+                assertTrue(
+                    histories.stream()
+                        .map(MemberHistory::eventType)
+                        .collect(Collectors.toSet())
+                        .containsAll(setOf(EventType.PERSIST, EventType.UPDATE))
+                )
+            }
         )
 
     }
