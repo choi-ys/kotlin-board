@@ -1,5 +1,6 @@
 package io.example.board.domain.entity.rdb.listener
 
+import io.example.board.domain.entity.rdb.common.EventType
 import io.example.board.domain.entity.rdb.history.MemberHistory
 import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.repository.MemberHistoryRepository
@@ -18,17 +19,17 @@ class MemberHistoryListener : HistoryListener {
 
     @PostPersist
     override fun postPersist(entity: Any) {
-        saveHistory(entity, HistoryEventType.PERSIST)
+        saveHistory(entity, EventType.PERSIST)
     }
 
     @PostUpdate
     override fun postUpdate(entity: Any) {
-        saveHistory(entity, HistoryEventType.PERSIST)
+        saveHistory(entity, EventType.PERSIST)
     }
 
-    override fun saveHistory(entity: Any, historyEventType: HistoryEventType) {
+    override fun saveHistory(entity: Any, historyEventType: EventType) {
         ApplicationContextUtil.getBean(MemberHistoryRepository::class.java)
-            .save(MemberHistory.mapFor(entity as Member))
+            .save(MemberHistory.mapFor(entity as Member, historyEventType))
         logger.info("[History:Member][Event:{}]", historyEventType)
     }
 }

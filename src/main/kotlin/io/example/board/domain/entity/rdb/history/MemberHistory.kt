@@ -1,6 +1,7 @@
 package io.example.board.domain.entity.rdb.history
 
 import io.example.board.domain.entity.rdb.common.Auditor
+import io.example.board.domain.entity.rdb.common.EventType
 import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.domain.entity.rdb.member.MemberStatus
 import javax.persistence.*
@@ -16,8 +17,13 @@ class MemberHistory(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @Column(name = "member_id", nullable = false)
-    var memberId: Long,
+    @Enumerated(EnumType.STRING)
+    @Column(name = "event_type", nullable = false)
+    var eventType: EventType,
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    var member: Member,
 
     @Column(name = "name", nullable = false, length = 15)
     var name: String,
@@ -37,9 +43,10 @@ class MemberHistory(
 ) : Auditor() {
 
     companion object {
-        fun mapFor(member: Member): MemberHistory {
+        fun mapFor(member: Member, eventType: EventType): MemberHistory {
             return MemberHistory(
-                memberId = member.id,
+                eventType = eventType,
+                member = member,
                 name = member.name,
                 email = member.email,
                 password = member.password,
