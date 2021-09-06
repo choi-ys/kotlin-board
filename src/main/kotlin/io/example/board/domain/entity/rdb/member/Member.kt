@@ -2,6 +2,8 @@ package io.example.board.domain.entity.rdb.member
 
 import io.example.board.domain.entity.rdb.common.Auditor
 import io.example.board.domain.entity.rdb.listener.MemberHistoryListener
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import java.util.stream.Collectors
 import javax.persistence.*
 
 @Entity
@@ -27,7 +29,21 @@ data class Member(
     var password: String,
 
     @Column(name = "nickname", nullable = false, length = 20)
-    var nickname: String
+    var nickname: String,
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+        name = "member_role_tb",
+        joinColumns = [JoinColumn(
+            name = "member_id",
+            foreignKey = ForeignKey(name = "TB_MEMBER_ROLE_MEMBER_ID_FOREIGN_KEY")
+        )]
+    )
+    @Enumerated(EnumType.STRING)
+    var roles: MutableSet<MemberRole> = HashSet(),
+
+    @Column(name = "nickname", nullable = false)
+    var enabled: Boolean = true
 
 ) : Auditor() {
 
@@ -54,5 +70,11 @@ data class Member(
 
     fun updateNickname(newNickname: String) {
         this.nickname = newNickname
+    }
+
+    fun toSimpleGrantedAuthoriy(): Set<SimpleGrantedAuthority> {
+        return roles.stream()
+            .map { it -> SimpleGrantedAuthority(it.name) }
+            .collect(Collectors.toSet())
     }
 }
