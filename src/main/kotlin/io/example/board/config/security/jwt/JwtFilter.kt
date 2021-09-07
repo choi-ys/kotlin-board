@@ -15,13 +15,15 @@ class JwtFilter(
 
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         val token = tokenUtils.resolve(request as HttpServletRequest)
-
-        val verifyResult = tokenUtils.verify(token)
-        if (verifyResult.success) {
-            SecurityContextHolder.getContext().authentication = token?.let {
-                tokenUtils.getAuthentication(it)
+        if("" != token){
+            val verifyResult = tokenUtils.verify(token)
+            if (verifyResult.success) {
+                SecurityContextHolder.getContext().authentication = token?.let {
+                    tokenUtils.getAuthentication(it)
+                }
             }
         }
+
         chain.doFilter(request, response)
         return
     }
