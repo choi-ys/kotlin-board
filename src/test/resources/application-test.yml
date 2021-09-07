@@ -44,3 +44,13 @@ decorator:
       enable-logging: true # 실행 쿼리 출력 시 파라미터가 바인딩된 실행 쿼리 출력 옵션
       multiline: true
       logging: slf4j
+
+---
+jwt:
+  signature: test-signature-key
+  issuer: io.example.jwt
+  subject: resource-access
+  audience: client-server
+  claim-key: principal
+  access-token-validity-in-seconds-term: 600000 # access token의 유효 기간 : 10분
+  refresh-token-validity-in-seconds-term: 1200000 # access token의 유효 기간 : 20분

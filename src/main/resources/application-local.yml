@@ -31,6 +31,7 @@ spring:
     host: localhost
     port: 6379
 
+---
 jwt:
   signature: test-signature-key
   issuer: io.example.jwt
