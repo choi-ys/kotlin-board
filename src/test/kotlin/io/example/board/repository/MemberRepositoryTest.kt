@@ -4,6 +4,7 @@ import io.example.board.config.test.JpaTestConfig
 import io.example.board.config.test.assertions.ObjectAssertions.Companion.assertMember
 import io.example.board.domain.entity.rdb.common.EventType
 import io.example.board.domain.entity.rdb.history.MemberHistory
+import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.domain.entity.rdb.member.MemberStatus
 import io.example.board.util.ApplicationContextUtil
 import io.example.board.util.generator.MemberGenerator
@@ -97,7 +98,6 @@ internal class MemberRepositoryTest : JpaTestConfig() {
                 )
             }
         )
-
     }
 
     @Disabled
@@ -117,5 +117,56 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         }
         // Then : check query result as null
         assertEquals(memberRepository.findByIdOrNull(savedMember.id), null)
+    }
+
+    @Test
+    @DisplayName("회원 권한 추가")
+    fun addRoles() {
+        // Given
+        val savedMember = memberRepository.saveAndFlush(MemberGenerator.generateMemberEntity())
+        val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
+
+        // When
+        savedMember.addRoles(additionRoles)
+        flush()
+
+        // Then
+        assertTrue(savedMember.roles.containsAll(additionRoles))
+    }
+
+    @Test
+    @DisplayName("회원 권한 제거")
+    fun removeRoles() {
+        // Given
+        val savedMember = memberRepository.saveAndFlush(MemberGenerator.generateMemberEntity())
+        val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
+        savedMember.addRoles(additionRoles)
+        flush()
+        val removalRoles = setOf(MemberRole.MEMBER, MemberRole.ADMIN)
+
+        // When
+        savedMember.removeRoles(removalRoles)
+        flush()
+
+        // Then
+        assertFalse(savedMember.roles.containsAll(removalRoles))
+    }
+
+    @Test
+    @DisplayName("모든 권한 제거 시 예외")
+    fun exceptionByRemoveAllRoles() {
+        // Given
+        val savedMember = memberRepository.saveAndFlush(MemberGenerator.generateMemberEntity())
+
+        // When
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            savedMember.removeRoles(savedMember.roles)
+        }
+
+        // Then
+        assertAll(
+            { assertEquals(exception.javaClass.simpleName, IllegalArgumentException::class.java.simpleName) },
+            { assertEquals(exception.message, "최소 하나 이상의 권한이 존재해야 합니다.") }
+        )
     }
 }

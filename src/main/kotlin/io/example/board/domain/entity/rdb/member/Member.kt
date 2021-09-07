@@ -40,9 +40,9 @@ data class Member(
         )]
     )
     @Enumerated(EnumType.STRING)
-    var roles: MutableSet<MemberRole> = HashSet(),
+    var roles: MutableSet<MemberRole> = mutableSetOf(MemberRole.MEMBER),
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "enabled", nullable = false)
     var enabled: Boolean = true
 
 ) : Auditor() {
@@ -72,9 +72,20 @@ data class Member(
         this.nickname = newNickname
     }
 
-    fun toSimpleGrantedAuthoriy(): Set<SimpleGrantedAuthority> {
+    fun mapToSimpleGrantedAuthority(): Set<SimpleGrantedAuthority> {
         return roles.stream()
-            .map { it -> SimpleGrantedAuthority(it.name) }
+            .map { SimpleGrantedAuthority("ROLE_" + it.name) }
             .collect(Collectors.toSet())
+    }
+
+    fun addRoles(additionRoles: Set<MemberRole>) {
+        roles.addAll(additionRoles)
+    }
+
+    fun removeRoles(removalRoles: Set<MemberRole>) {
+        if (removalRoles == roles) {
+            throw IllegalArgumentException("최소 하나 이상의 권한이 존재해야 합니다.")
+        }
+        roles.removeAll(removalRoles)
     }
 }

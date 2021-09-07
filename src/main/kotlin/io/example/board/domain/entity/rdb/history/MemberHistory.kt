@@ -39,7 +39,11 @@ class MemberHistory(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
-    var status: MemberStatus?
+    var status: MemberStatus?,
+
+    @Column(name = "enabled", nullable = false, length = 20)
+    var enabled: Boolean
+
 ) : Auditor() {
 
     companion object {
@@ -51,7 +55,8 @@ class MemberHistory(
                 email = member.email,
                 password = member.password,
                 nickname = member.nickname,
-                status = member.status
+                status = member.status,
+                enabled = member.enabled
             )
         }
     }
