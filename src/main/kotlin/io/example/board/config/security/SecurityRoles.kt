@@ -6,39 +6,11 @@ enum class SecurityRoles(private val matchers: List<AuthRequest>) {
     NONE(listOf<AuthRequest>(
         AuthRequest(
             HttpMethod.GET, listOf(
-            "/post/**"
+            "/index"
         )),
         AuthRequest(
             HttpMethod.POST, listOf(
             "/signup", "/login"
-        ))
-    )),
-    USER(listOf<AuthRequest>(
-        AuthRequest(
-            HttpMethod.GET, listOf(
-            "/post/**"
-        )),
-        AuthRequest(
-            HttpMethod.POST, listOf(
-            "/login", "/logout"
-        )),
-        AuthRequest(
-            HttpMethod.PUT, listOf(
-            "/member/**"
-        )),
-    )),
-    ADMIN(listOf<AuthRequest>(
-        AuthRequest(HttpMethod.GET, listOf(
-            "/**"
-        )),
-        AuthRequest(HttpMethod.POST, listOf(
-            "/**"
-        )),
-        AuthRequest(HttpMethod.PUT, listOf(
-            "/**"
-        )),
-        AuthRequest(HttpMethod.DELETE, listOf(
-            "/**"
         ))
     ));
 
