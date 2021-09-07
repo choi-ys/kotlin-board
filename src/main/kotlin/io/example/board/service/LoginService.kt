@@ -6,6 +6,9 @@ import io.example.board.repository.MemberRepository
 import mu.KotlinLogging
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -18,7 +21,7 @@ private val logger = KotlinLogging.logger { }
 class LoginService(
     private val passwordEncoder: PasswordEncoder,
     private val memberRepository: MemberRepository
-) {
+) : UserDetailsService {
 
     fun login(loginRequest: LoginRequest): LoginResponse {
         val member = memberRepository.findByEmail(loginRequest.email).orElseThrow() {
@@ -37,5 +40,13 @@ class LoginService(
                 member.mapToSimpleGrantedAuthority()
             )
         return LoginResponse(member.id, member.email, member.nickname)
+    }
+
+    override fun loadUserByUsername(username: String): UserDetails {
+        val member = memberRepository.findByEmail(username).orElseThrow() {
+            logger.error("요청에 해당하는 사용자가 없습니다.")
+            throw UsernameNotFoundException("요청에 해당하는 사용자가 없습니다.")
+        }
+        return User(member.email, null, member.mapToSimpleGrantedAuthority());
     }
 }
