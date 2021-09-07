@@ -26,8 +26,11 @@ class SecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
             .and()
-            .authorizeRequests()
-            .antMatchers(GET, *SecurityRoles.NONE.patterns(GET)).permitAll()
-            .antMatchers(POST, *SecurityRoles.NONE.patterns(POST)).permitAll()
+            .authorizeRequests {
+                it
+                    .antMatchers(GET, *SecurityRoles.NONE.patterns(GET)).permitAll()
+                    .antMatchers(POST, *SecurityRoles.NONE.patterns(POST)).permitAll()
+                    .anyRequest().authenticated()
+            }
     }
 }
