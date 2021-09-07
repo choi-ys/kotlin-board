@@ -4,6 +4,8 @@ import io.example.board.domain.dto.request.LoginRequest
 import io.example.board.domain.dto.response.LoginResponse
 import io.example.board.repository.MemberRepository
 import mu.KotlinLogging
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -28,6 +30,12 @@ class LoginService(
             logger.error("로그인에 실패하였습니다. 로그인 정보를 다시 확인해 주세요.")
             throw SecurityException("로그인에 실패하였습니다. 로그인 정보를 다시 확인해 주세요.")
         }
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(
+                member.email,
+                null,
+                member.mapToSimpleGrantedAuthority()
+            )
         return LoginResponse(member.id, member.email, member.nickname)
     }
 }
