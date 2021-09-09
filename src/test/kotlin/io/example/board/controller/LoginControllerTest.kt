@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 
@@ -48,5 +49,12 @@ internal class LoginControllerTest : IntegrationTestConfig() {
         // Then
         resultActions.andDo(print())
             .andExpect(status().isOk)
+            .andExpect(jsonPath("id").exists())
+            .andExpect(jsonPath("email").value(member.email))
+            .andExpect(jsonPath("nickname").value(member.nickname))
+            .andExpect(jsonPath("token.accessToken").exists())
+            .andExpect(jsonPath("token.refreshToken").exists())
+            .andExpect(jsonPath("token.accessExpired").exists())
+            .andExpect(jsonPath("token.refreshExpired").exists())
     }
 }
