@@ -1,7 +1,7 @@
 package io.example.board.config.security
 
-import io.example.board.config.security.jwt.JwtConfigurer
-import io.example.board.config.security.jwt.TokenUtils
+import io.example.board.config.security.jwt.certification.JwtConfigurer
+import io.example.board.config.security.jwt.certification.TokenUtils
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity

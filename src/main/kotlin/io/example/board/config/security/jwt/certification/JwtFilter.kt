@@ -1,4 +1,4 @@
-package io.example.board.config.security.jwt
+package io.example.board.config.security.jwt.certification
 
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component

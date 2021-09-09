@@ -1,4 +1,4 @@
-package io.example.board.config.security.jwt
+package io.example.board.config.security.jwt.certification
 
 /**
  * @author : choi-ys

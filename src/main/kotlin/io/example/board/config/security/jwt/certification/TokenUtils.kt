@@ -1,8 +1,8 @@
-package io.example.board.config.security.jwt
+package io.example.board.config.security.jwt.certification
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.example.board.config.security.jwt.VerifyResult.Companion.mapFor
+import io.example.board.config.security.jwt.certification.VerifyResult.Companion.mapFor
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
@@ -19,7 +19,7 @@ class TokenUtils : InitializingBean {
     private var ALGORITHM: Algorithm? = null
 
     /**
-     * TokenProvider Bean 생성 이후 application.yml의 jwt.signature_key값 로드 완료 후 ALGORITHM 초기화
+     * TokenUtils Bean 생성 이후 application.yml의 jwt.signature_key값 로드 완료 후 ALGORITHM 초기화
      */
     override fun afterPropertiesSet() {
         ALGORITHM = Algorithm.HMAC256(SIGNATURE)

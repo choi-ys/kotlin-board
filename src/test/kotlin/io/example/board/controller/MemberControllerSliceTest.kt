@@ -2,7 +2,7 @@ package io.example.board.controller
 
 import io.example.board.aspect.exception.CommonException
 import io.example.board.aspect.exception.Error
-import io.example.board.config.security.jwt.TokenUtils
+import io.example.board.config.security.jwt.certification.TokenUtils
 import io.example.board.config.test.WebMvcTestConfig
 import io.example.board.domain.dto.response.SignupResponse
 import io.example.board.service.MemberService

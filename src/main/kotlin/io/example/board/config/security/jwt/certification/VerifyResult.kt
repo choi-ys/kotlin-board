@@ -1,4 +1,4 @@
-package io.example.board.config.security.jwt
+package io.example.board.config.security.jwt.certification
 
 import com.auth0.jwt.interfaces.Claim
 import org.springframework.security.core.authority.SimpleGrantedAuthority
