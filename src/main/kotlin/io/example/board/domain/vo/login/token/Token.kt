@@ -10,8 +10,11 @@ import java.util.*
 data class Token(
     val accessToken: String,
 
-    private val refreshToken: String,
+    val refreshToken: String,
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm:ss", timezone = "Asia/Seoul")
-    val accessExpired: Date
+    val accessExpired: Date,
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm:ss", timezone = "Asia/Seoul")
+    val refreshExpired: Date
 )

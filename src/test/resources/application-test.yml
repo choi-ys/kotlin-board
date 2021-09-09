@@ -51,6 +51,5 @@ jwt:
   issuer: io.example.jwt
   subject: resource-access
   audience: client-server
-  claim-key: principal
-  access-token-validity-in-seconds-term: 600000 # access token의 유효 기간 : 10분
-  refresh-token-validity-in-seconds-term: 1200000 # access token의 유효 기간 : 20분
+  access-token-validity-in-seconds-term: 600 # access token의 유효 기간 : 10분
+  refresh-token-validity-in-seconds-term: 1200 # refresh token의 유효 기간 : 20분

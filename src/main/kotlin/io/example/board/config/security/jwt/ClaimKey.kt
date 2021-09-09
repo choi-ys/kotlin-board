@@ -10,5 +10,7 @@ enum class ClaimKey(val value: String) {
     AUD("aud"),
     IAT("iat"),
     EXP("exp"),
-    PRINCIPAL("principal");
+    USE("use"),
+    USERNAME("username"),
+    AUTHORITIES("authorities");
 }

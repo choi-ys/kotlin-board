@@ -3,7 +3,6 @@ package io.example.board.config.security.jwt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.example.board.config.security.jwt.VerifyResult.Companion.mapFor
-import io.example.board.service.LoginService
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
@@ -14,9 +13,7 @@ import org.springframework.util.StringUtils
 import javax.servlet.http.HttpServletRequest
 
 @Component
-class TokenUtils(
-    val loginService: LoginService
-) : InitializingBean {
+class TokenUtils : InitializingBean {
     @Value("\${jwt.signature}")
     private val SIGNATURE: String? = null
     private var ALGORITHM: Algorithm? = null
@@ -55,11 +52,7 @@ class TokenUtils(
     }
 
     fun getAuthentication(token: String): Authentication {
-        val userDetails = loginService.loadUserByUsername(getUsername(token))
-        return UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
-    }
-
-    fun getUsername(token: String?): String {
-        return JWT.require(ALGORITHM).build().verify(token).getClaim(ClaimKey.PRINCIPAL.value).asString()
+        val verifyResult = verify(token)
+        return UsernamePasswordAuthenticationToken(verifyResult.username, null, verifyResult.authorities)
     }
 }

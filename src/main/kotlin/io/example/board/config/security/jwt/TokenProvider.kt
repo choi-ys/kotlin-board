@@ -1,69 +1,73 @@
-package io.example.board.config.security.jwt;
+package io.example.board.config.security.jwt
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import io.example.board.domain.vo.login.token.Token;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import io.example.board.domain.vo.login.token.Token
+import org.springframework.beans.factory.InitializingBean
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
-public class TokenProvider implements InitializingBean {
+class TokenProvider : InitializingBean {
+    @Value("\${jwt.signature}")
+    private val SIGNATURE: String? = null
+    private var ALGORITHM: Algorithm? = null
 
-    @Value("${jwt.signature}")
-    private String SIGNATURE;
-    private Algorithm ALGORITHM;
+    @Value("\${jwt.issuer}")
+    private val ISSUER: String? = null
 
-    @Value("${jwt.issuer}")
-    private String ISSUER;
+    @Value("\${jwt.subject}")
+    private val SUBJECT: String? = null
 
-    @Value("${jwt.subject}")
-    private final String SUBJECT = "resource-access";
+    @Value("\${jwt.audience}")
+    private val AUDIENCE: String? = null
 
-    @Value("${jwt.audience}")
-    private final String AUDIENCE = "client-server";
+    @Value("\${jwt.access-token-validity-in-seconds-term}")
+    private val ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM: Long? = null
 
-    @Value("${jwt.claim-key}")
-    private String CLAIM_KEY;
-
-    @Value("${jwt.access-token-validity-in-seconds-term}")
-    private Long ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM;
-
-    @Value("${jwt.refresh-token-validity-in-seconds-term}")
-    private Long REFRESH_TOKEN_VALIDITY_IN_SECONDS_TERM;
+    @Value("\${jwt.refresh-token-validity-in-seconds-term}")
+    private val REFRESH_TOKEN_VALIDITY_IN_SECONDS_TERM: Long? = null
 
     /**
      * TokenProvider Bean 생성 이후 application.yml의 jwt.signature_key값 로드 완료 후 ALGORITHM 초기화
      */
-    @Override
-    public void afterPropertiesSet() {
-        ALGORITHM = Algorithm.HMAC256(SIGNATURE);
+    override fun afterPropertiesSet() {
+        ALGORITHM = Algorithm.HMAC256(SIGNATURE)
     }
 
-    public Token createToken(String claim) {
-        long currentTimeMillis = System.currentTimeMillis();
-        Date accessExpired = new Date(System.currentTimeMillis() + (ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM * 1000));
-
-        String accessToken = tokenBuilder(currentTimeMillis, TokenType.ACCESS, claim);
-        String refreshToken = tokenBuilder(currentTimeMillis, TokenType.REFRESH, claim);
-
-        return new Token(accessToken, refreshToken, accessExpired);
+    fun createToken(userDetails: UserDetails): Token {
+        val currentTimeMillis = System.currentTimeMillis()
+        val accessExpired = Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM!! * 1000)
+        val refreshExpired = Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY_IN_SECONDS_TERM!! * 1000)
+        val accessToken = accessTokenBuilder(currentTimeMillis, userDetails)
+        val refreshToken = refreshTokenBuilder(currentTimeMillis, userDetails)
+        return Token(accessToken, refreshToken, accessExpired, refreshExpired)
     }
 
-    private String tokenBuilder(long currentTimeMillis, TokenType tokenType, String claim) {
-        long tokenValidityInSecondsTerm = tokenType.equals(TokenType.ACCESS) ?
-                ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM : REFRESH_TOKEN_VALIDITY_IN_SECONDS_TERM;
-
+    private fun accessTokenBuilder(currentTimeMillis: Long, userDetails: UserDetails): String {
         return JWT.create()
-                .withIssuer(ISSUER)
-                .withSubject(SUBJECT)
-                .withAudience(AUDIENCE)
-                .withIssuedAt(new Date(currentTimeMillis))
-                .withExpiresAt(new Date(currentTimeMillis + (tokenValidityInSecondsTerm)))
-                .withClaim(CLAIM_KEY, claim)
-                .sign(Algorithm.HMAC256(SIGNATURE))
-                ;
+            .withIssuer(ISSUER)
+            .withSubject(SUBJECT)
+            .withAudience(AUDIENCE)
+            .withIssuedAt(Date(currentTimeMillis))
+            .withExpiresAt(Date(currentTimeMillis + ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM!!))
+            .withClaim(ClaimKey.USE.value, TokenType.ACCESS.name)
+            .withClaim(ClaimKey.USERNAME.value, userDetails.username)
+            .withClaim(ClaimKey.AUTHORITIES.value, userDetails.authorities.joinToString(","))
+            .sign(Algorithm.HMAC256(SIGNATURE))
+    }
+
+    private fun refreshTokenBuilder(currentTimeMillis: Long, userDetails: UserDetails): String {
+        return JWT.create()
+            .withIssuer(ISSUER)
+            .withSubject(SUBJECT)
+            .withAudience(AUDIENCE)
+            .withIssuedAt(Date(currentTimeMillis))
+            .withExpiresAt(Date(currentTimeMillis + REFRESH_TOKEN_VALIDITY_IN_SECONDS_TERM!!))
+            .withClaim(ClaimKey.USE.value, TokenType.REFRESH.name)
+            .withClaim(ClaimKey.USERNAME.value, userDetails.username)
+            .sign(Algorithm.HMAC256(SIGNATURE))
     }
 }
