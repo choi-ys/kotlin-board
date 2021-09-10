@@ -1,7 +1,6 @@
 package io.example.board.domain.entity.rdb.member
 
 import io.example.board.domain.entity.rdb.common.Auditor
-import io.example.board.domain.entity.rdb.listener.MemberHistoryListener
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.stream.Collectors
 import javax.persistence.*
@@ -16,7 +15,6 @@ import javax.persistence.*
         )
     ]
 )
-@EntityListeners(MemberHistoryListener::class)
 data class Member(
 
     @Column(name = "name", nullable = false, length = 15)
