@@ -1,10 +1,15 @@
 package io.example.board.service
 
+import io.example.board.config.security.jwt.certification.TokenUtils
+import io.example.board.config.security.jwt.offer.TokenProvider
 import io.example.board.domain.dto.request.LoginRequest
+import io.example.board.domain.dto.request.RefreshTokenRequest
 import io.example.board.domain.dto.response.LoginResponse
+import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.vo.login.LoginUserAdapter
+import io.example.board.domain.vo.login.token.Token
 import io.example.board.repository.MemberRepository
 import mu.KotlinLogging
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -19,7 +24,8 @@ private val logger = KotlinLogging.logger { }
 class LoginService(
     private val passwordEncoder: PasswordEncoder,
     private val memberRepository: MemberRepository,
-    private val tokenService: TokenService
+    private val tokenProvider: TokenProvider,
+    private val tokenUtils: TokenUtils
 ) : UserDetailsService {
 
     fun login(loginRequest: LoginRequest): LoginResponse {
@@ -32,7 +38,7 @@ class LoginService(
             logger.error("로그인에 실패하였습니다. 로그인 정보를 다시 확인해 주세요.")
             throw SecurityException("로그인에 실패하였습니다. 로그인 정보를 다시 확인해 주세요.")
         }
-        return LoginResponse(member.id, member.email, member.nickname, tokenService.issued(member))
+        return LoginResponse(member.id, member.email, member.nickname, issued(member))
     }
 
     override fun loadUserByUsername(username: String): UserDetails {
@@ -40,6 +46,17 @@ class LoginService(
             logger.error("요청에 해당하는 사용자가 없습니다.")
             throw UsernameNotFoundException("요청에 해당하는 사용자가 없습니다.")
         }
-        return User(member.email, null, member.mapToSimpleGrantedAuthority());
+        return LoginUserAdapter(member.email, member.mapToSimpleGrantedAuthority())
+    }
+
+    fun issued(member: Member): Token {
+        val loginUserAdapter = LoginUserAdapter(member.email, member.mapToSimpleGrantedAuthority())
+        return tokenProvider.createToken(loginUserAdapter)
+    }
+
+    fun refresh(refreshTokenRequest: RefreshTokenRequest): Token {
+        val verify = tokenUtils.verify(refreshTokenRequest.refreshToken)
+        val userDetails = loadUserByUsername(verify.username)
+        return tokenProvider.createToken(userDetails)
     }
 }

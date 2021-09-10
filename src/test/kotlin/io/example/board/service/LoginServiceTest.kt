@@ -1,9 +1,13 @@
 package io.example.board.service
 
+import io.example.board.config.security.jwt.certification.TokenUtils
+import io.example.board.config.security.jwt.offer.TokenProvider
 import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.LoginRequest
+import io.example.board.domain.vo.login.token.Token
 import io.example.board.repository.MemberRepository
 import io.example.board.util.generator.MemberGenerator
+import io.example.board.util.generator.TokenGenerator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
@@ -17,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
 
 @DisplayName("Service:Login")
-@Import(MemberGenerator::class)
+@Import(MemberGenerator::class, TokenGenerator::class)
 internal class LoginServiceTest : MockingTestConfig() {
 
     @Mock
@@ -25,6 +29,12 @@ internal class LoginServiceTest : MockingTestConfig() {
 
     @Mock
     lateinit var memberRepository: MemberRepository
+
+    @Mock
+    lateinit var tokenProvider: TokenProvider
+
+    @Mock
+    lateinit var tokenUtils: TokenUtils
 
     @InjectMocks
     lateinit var loginService: LoginService
@@ -37,16 +47,17 @@ internal class LoginServiceTest : MockingTestConfig() {
         val loginRequest = LoginRequest(email = member.email, password = member.password)
         given(memberRepository.findByEmail(member.email)).willReturn(Optional.of(member))
         given(passwordEncoder.matches(loginRequest.password, member.password)).willReturn(true)
+        given(loginService.issued(member)).willReturn(Token("access", "refresh", Date(), Date()))
 
         // When
-        val loginUser = loginService.login(loginRequest)
+        val loginResponse = loginService.login(loginRequest)
 
         // Then
         verify(memberRepository, times(1)).findByEmail(member.email)
         verify(passwordEncoder, times(1)).matches(loginRequest.password, member.password)
 
-        assertEquals(loginUser.email, member.email)
-        assertEquals(loginUser.nickname, member.nickname)
+        assertEquals(loginResponse.email, member.email)
+        assertEquals(loginResponse.nickname, member.nickname)
     }
 
     @Test
