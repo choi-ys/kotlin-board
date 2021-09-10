@@ -10,7 +10,7 @@ enum class SecurityRoles(private val matchers: List<AuthRequest>) {
         )),
         AuthRequest(
             HttpMethod.POST, listOf(
-            "/signup", "/login"
+            "/member/signup", "/login"
         ))
     ));
 
