@@ -7,6 +7,7 @@ import io.example.board.config.test.WebMvcTestConfig
 import io.example.board.domain.dto.response.SignupResponse
 import io.example.board.service.MemberService
 import io.example.board.util.generator.MemberGenerator
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @DisplayName("Controller:Member(Slice Test)")
 @WebMvcTest(MemberController::class)
+@Disabled
 internal class MemberControllerTest : WebMvcTestConfig() {
 
     @MockBean
