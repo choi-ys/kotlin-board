@@ -24,7 +24,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 객체 저장")
     fun save() {
         // Given
-        val givenMember = MemberGenerator.generateMemberEntity()
+        val givenMember = MemberGenerator.member()
 
         // When
         val expected = memberRepository.save(givenMember)
@@ -42,7 +42,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 객체 조회")
     fun findById() {
         // Given
-        val savedMember = memberRepository.save(MemberGenerator.generateMemberEntity())
+        val savedMember = memberRepository.save(MemberGenerator.member())
         flushAndClear()
 
         // When
@@ -58,7 +58,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 속성 수정")
     fun updateByDirtyChecking() {
         // Given
-        val savedMember = memberRepository.save(MemberGenerator.generateMemberEntity())
+        val savedMember = memberRepository.save(MemberGenerator.member())
 
         val newName = "최용식"
         savedMember.updateName(newName)
@@ -79,7 +79,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 객체 삭제")
     fun delete() {
         // Given
-        val savedMember = memberRepository.save(MemberGenerator.generateMemberEntity())
+        val savedMember = memberRepository.save(MemberGenerator.member())
 
         // When
         memberRepository.delete(savedMember)
@@ -97,7 +97,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 권한 추가")
     fun addRoles() {
         // Given
-        val savedMember = memberRepository.saveAndFlush(MemberGenerator.generateMemberEntity())
+        val savedMember = memberRepository.saveAndFlush(MemberGenerator.member())
         val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
 
         // When
@@ -112,7 +112,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 권한 제거")
     fun removeRoles() {
         // Given
-        val savedMember = memberRepository.saveAndFlush(MemberGenerator.generateMemberEntity())
+        val savedMember = memberRepository.saveAndFlush(MemberGenerator.member())
         val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
         savedMember.addRoles(additionRoles)
         flush()
@@ -130,7 +130,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("모든 권한 제거 시 예외")
     fun exceptionByRemoveAllRoles() {
         // Given
-        val savedMember = memberRepository.saveAndFlush(MemberGenerator.generateMemberEntity())
+        val savedMember = memberRepository.saveAndFlush(MemberGenerator.member())
 
         // When
         val exception = assertThrows(IllegalArgumentException::class.java) {

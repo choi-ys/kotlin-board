@@ -31,4 +31,5 @@ class PostGenerator {
     fun savedPost(): Post {
         return postRepository.saveAndFlush(post())
     }
+
 }

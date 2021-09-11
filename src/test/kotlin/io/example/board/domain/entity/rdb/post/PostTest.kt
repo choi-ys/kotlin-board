@@ -16,7 +16,7 @@ internal class PostTest {
     @DisplayName("게시글 객체 생성")
     fun save() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         val title = "게시판 제목"
         val content = "게시판 본문"
         val post = Post(title = title, content = content, member = member)
@@ -27,7 +27,7 @@ internal class PostTest {
             { assertEquals(post.title, title) },
             { assertEquals(post.content, content) },
             { assertEquals(post.viewCount, 0L) },
-            { assertEquals(post.display, true, "생성자에서 제외된 전시 항목의 기본 전시 여부 항목을 확인") },
+            { assertEquals(post.display, true, "생성자에서 제외된 전시 항목의 기본 전시 여부를 확인") },
             { assertEquals(post.createdBy, null, "Auditor를 통해 설정되는 생성주체 정보의 null 여부를 확인") },
             { assertEquals(post.updatedBy, null, "Auditor를 통해 설정되는 수정주체 정보의 null 여부를 확인") },
             { assertEquals(post.createdAt, null, "Auditor를 통해 설정되는 생성일자 정보의 null 여부를 확인") },
@@ -42,7 +42,7 @@ internal class PostTest {
         val title = "게시판 제목"
         val newTitle = "수정된 게시판 제목"
         val content = "게시판 본문"
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         val post = Post(title = title, content = content, member = member)
 
         // When

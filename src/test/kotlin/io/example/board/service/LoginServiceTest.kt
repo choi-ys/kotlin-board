@@ -43,7 +43,7 @@ internal class LoginServiceTest : MockingTestConfig() {
     @DisplayName("로그인")
     fun login() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         val loginRequest = LoginRequest(email = member.email, password = member.password)
         given(memberRepository.findByEmail(member.email)).willReturn(Optional.of(member))
         given(passwordEncoder.matches(loginRequest.password, member.password)).willReturn(true)
@@ -77,7 +77,7 @@ internal class LoginServiceTest : MockingTestConfig() {
     @DisplayName("로그인 실패 : 비밀번호가 일치하지 않는 경우")
     fun loginFail_causePasswordNotCorrect() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         val loginRequest = LoginRequest(member.email, member.password)
 
         given(memberRepository.findByEmail(member.email)).willReturn(Optional.of(member))

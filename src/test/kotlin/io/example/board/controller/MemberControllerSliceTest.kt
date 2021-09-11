@@ -29,7 +29,7 @@ internal class MemberControllerTest : WebMvcTestConfig() {
     lateinit var tokenUtils: TokenUtils
 
     private val SIGNUP_URL = "/member/signup"
-    private val signupRequest = MemberGenerator.generateSignupRequest()
+    private val signupRequest = MemberGenerator.signupRequest()
     private val signupResponse = SignupResponse(
         id = 1L,
         name = signupRequest.name,

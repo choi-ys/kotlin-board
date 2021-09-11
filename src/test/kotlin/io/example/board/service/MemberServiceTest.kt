@@ -51,8 +51,8 @@ class MemberServiceTest : MockingTestConfig() {
     @DisplayName("회원 가입")
     fun signup() {
         // Given
-        val signupRequest: SignupRequest = MemberGenerator.generateSignupRequest()
-        val member = MemberGenerator.generateMemberEntity()
+        val signupRequest: SignupRequest = MemberGenerator.signupRequest()
+        val member = MemberGenerator.member()
 
         given(passwordEncoder.encode(signupRequest.password)).willReturn("encoded password")
         given(memberRepository.save(any(Member::class.java))).willReturn(member)
@@ -74,7 +74,7 @@ class MemberServiceTest : MockingTestConfig() {
     @DisplayName("회원 가입 실패 : 이메일 중복")
     fun signup_duplicationEmailException() {
         // Given
-        val signupRequest = MemberGenerator.generateSignupRequest()
+        val signupRequest = MemberGenerator.signupRequest()
         given(memberRepository.existsByEmail(signupRequest.email)).willReturn(true)
 
         // When & Then
@@ -82,14 +82,14 @@ class MemberServiceTest : MockingTestConfig() {
             memberService.signup(signupRequest)
         }
         verify(memberRepository, times(1)).existsByEmail(signupRequest.email)
-//        assertEquals(expectedException.message, "이미 존재하는 이메일 입니다.")
+        assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
     }
 
     @Test
     @DisplayName("회원 인증 메일 발송")
     fun receiptCertify() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         val certificationText = UUID.randomUUID().toString()
         val mailCache = MailCache(email = member.email, certificationText = certificationText)
 
@@ -120,14 +120,14 @@ class MemberServiceTest : MockingTestConfig() {
             memberService.receiptCertify(1L)
         }
         verify(memberRepository, times(1)).findById(any(Long::class.java))
-//        assertEquals(expectedException.message, "요청에 해당하는 사용자가 없습니다.")
+        assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
     }
 
     @Test
     @DisplayName("회원 인증")
     fun checkCertify() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         val mailCache = MailCache(email = member.email, UUID.randomUUID().toString())
         given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.of(member))
         given(mailCacheRepository.findById(member.email)).willReturn(Optional.of(mailCache))
@@ -164,14 +164,14 @@ class MemberServiceTest : MockingTestConfig() {
             memberService.checkCertify(memberCertifyRequest)
         }
         verify(memberRepository, times(1)).findById(any(Long::class.java))
-//        assertEquals(expectedException.message, "요청에 해당하는 사용자가 없습니다.")
+        assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
     }
 
     @Test
     @DisplayName("회원 인증 실패 : 인증 만료")
     fun checkCertify_expiredAuthenticationException() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.of(member))
         given(mailCacheRepository.findById(any(String::class.java))).willReturn(Optional.empty())
 
@@ -188,7 +188,7 @@ class MemberServiceTest : MockingTestConfig() {
 
         verify(memberRepository, times(1)).findById(any(Long::class.java))
         verify(mailCacheRepository, times(1)).findById(member.email)
-//        assertEquals(expectedException.message, "인증시간이 만료되었거나, 잘못된 요청입니다. 다시 시도해주세요.")
+        assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
 
     }
 }

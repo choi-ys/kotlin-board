@@ -33,7 +33,7 @@ internal class TokenProviderTest {
     @DisplayName("토큰 생성")
     fun createToken() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         member.addRoles(setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN))
         val user = User(member.email, "", member.mapToSimpleGrantedAuthority())
 

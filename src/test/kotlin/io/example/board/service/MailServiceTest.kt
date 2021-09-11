@@ -23,16 +23,14 @@ internal class MailServiceTest : MockingTestConfig() {
     @DisplayName("회원 인증 메일 전송")
     fun send() {
         // Given
-        var to = "rcn115@naver.com"
+        val to = "rcn115@naver.com"
         val simpleMailMessage = SimpleMailMessage().also {
             it.setTo(to)
             it.setSubject("test title")
             it.setText("test content")
         }
 
-//        doAnswer(`when`(javaMailSender.send(simpleMailMessage))).
         doNothing().`when`(javaMailSender).send(any(SimpleMailMessage::class.java))
-//            doNothing().`when`(javaMailSender)
 
         // When
         val sendCertificationMail = mailService.sendCertificationMail(to)

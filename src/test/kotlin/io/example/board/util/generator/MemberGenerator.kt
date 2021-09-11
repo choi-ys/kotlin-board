@@ -15,17 +15,17 @@ class MemberGenerator {
     lateinit var memberRepository: MemberRepository
 
     fun savedMember(): Member {
-        return memberRepository.saveAndFlush(MemberGenerator.generateMemberEntity())
+        return memberRepository.saveAndFlush(member())
     }
 
     companion object {
-        var name: String = "최용석"
-        var email: String = "test@naver.com"
-        var password: String = "password"
-        var nickname: String = "김턱상"
+        var name = "최용석"
+        var email = "test@naver.com"
+        var password = "password"
+        var nickname = "김턱상"
 
-        fun generateMemberEntity() = Member(name, email, password, nickname)
+        fun member() = Member(name, email, password, nickname)
 
-        fun generateSignupRequest() = SignupRequest(name, email, password, nickname)
+        fun signupRequest() = SignupRequest(name, email, password, nickname)
     }
 }
