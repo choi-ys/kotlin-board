@@ -2,6 +2,7 @@ package io.example.board.config.test.assertions
 
 import io.example.board.domain.entity.rdb.common.Auditor
 import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.entity.rdb.post.Post
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.util.Assert
 
@@ -22,13 +23,25 @@ interface ObjectAssertions {
         }
 
         fun <T : Member> assertMember(entity: T, given: Member) {
-            assertAuditor(entity)
             assertAll(
+                { assertAuditor(entity) },
                 { assertEquals(entity.id, given.id, MUST_EXIST_PK) },
                 { assertEquals(entity.email, given.email, NOT_NULL_STRING_PROPERTY) },
                 { assertEquals(entity.name, given.name, NOT_NULL_STRING_PROPERTY) },
                 { assertEquals(entity.nickname, given.nickname, NOT_NULL_STRING_PROPERTY) },
                 { assertEquals(entity.status, given.status, MUST_EXIST) },
+            )
+        }
+
+        fun <T : Post> assertPost(entity: T, given: Post) {
+            assertAll(
+                { assertAuditor(entity) },
+                { assertEquals(entity.id, given.id) },
+                { assertEquals(entity.title, given.title) },
+                { assertEquals(entity.content, given.content) },
+                { assertEquals(entity.viewCount, given.viewCount) },
+                { assertEquals(entity.display, given.display) },
+                { assertEquals(entity.member, given.member) }
             )
         }
 
