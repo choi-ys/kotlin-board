@@ -5,13 +5,13 @@ import io.example.board.domain.vo.login.token.Token
 import io.example.board.service.LoginService
 import io.example.board.service.MemberService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.boot.test.context.TestComponent
 
 /**
  * @author : choi-ys
  * @date : 2021/09/10 2:38 오후
  */
-@Component
+@TestComponent
 class TokenGenerator {
 
     @Autowired
@@ -21,7 +21,7 @@ class TokenGenerator {
     private lateinit var loginService: LoginService
 
     fun generateToken(): Token {
-        val signupRequest = MemberGenerator.generateSignupRequest()
+        val signupRequest = MemberGenerator.signupRequest()
         memberService.signup(signupRequest)
 
         val loginRequest = LoginRequest(signupRequest.email, MemberGenerator.password)

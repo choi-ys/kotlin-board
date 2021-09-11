@@ -10,6 +10,7 @@ import io.example.board.util.generator.TokenGenerator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -22,19 +23,20 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
  * @date : 2021/09/03 2:49 오후
  */
 @DisplayName("Controller:Login")
+@Import(TokenGenerator::class)
 internal class LoginControllerTest : IntegrationTestConfig() {
 
     @Autowired
-    lateinit var memberService: MemberService
+    lateinit var tokenGenerator: TokenGenerator
 
     @Autowired
-    lateinit var tokenGenerator: TokenGenerator
+    lateinit var memberService: MemberService
 
     @Test
     @DisplayName("API:로그인")
     fun login() {
         // Given
-        val member = MemberGenerator.generateMemberEntity()
+        val member = MemberGenerator.member()
         val signupRequest = SignupRequest(member.name, member.email, member.password, member.nickname)
         memberService.signup(signupRequest)
 
@@ -64,7 +66,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
     @DisplayName("API:토큰 갱신")
     fun refresh() {
         // Given
-        val generateToken = tokenGenerator.generateToken();
+        val generateToken = tokenGenerator.generateToken()
         val refreshTokenRequest = RefreshTokenRequest(generateToken.accessToken, generateToken.refreshToken)
 
         // When
