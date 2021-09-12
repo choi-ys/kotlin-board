@@ -1,4 +1,4 @@
-package io.example.board.aspect.exception
+package io.example.board.domain.dto.response.common
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
