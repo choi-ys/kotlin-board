@@ -71,7 +71,14 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     @Test
     @DisplayName("API:[400]회원 가입 실패(유효하지 못한 요청)")
     fun signup_Fail_CauseIllegalArgument() {
+        val signupRequest = SignupRequest("choi-ys", "project.log.062", "password", "noel")
 
+        // When
+        val resultAction = this.post(SIGNUP_URL, signupRequest)
+
+        // Then
+        resultAction.andDo(print())
+            .andExpect(status().isBadRequest)
     }
 
     @Test
