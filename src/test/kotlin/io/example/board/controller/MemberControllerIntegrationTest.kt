@@ -3,24 +3,31 @@ package io.example.board.controller
 import io.example.board.config.test.IntegrationTestConfig
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.util.generator.MemberGenerator
+import io.example.board.util.generator.TokenGenerator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Import
+import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @DisplayName("Controller:Member")
-@Import(MemberGenerator::class)
+@Import(MemberGenerator::class, TokenGenerator::class)
 internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
 
     @Autowired
     lateinit var memberGenerator: MemberGenerator
 
+    @Autowired
+    lateinit var tokenGenerator: TokenGenerator
+
     private val SIGNUP_URL = "/member/signup"
+    private val ROLES_URL = "/member/roles"
 
     @Test
     @DisplayName("API:[200]회원 가입")
@@ -117,5 +124,35 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
             .andExpect(status().isInternalServerError)
             .andExpect(jsonPath("message").value(errorMessage))
             .andExpect(jsonPath("request").value(signupRequest.email))
+    }
+
+    @Test
+    @DisplayName("API:[200]권한 목록 조회")
+    fun roles() {
+        // Given
+        val bearerToken = TokenGenerator.makeBearerToken(tokenGenerator.generateToken().accessToken)
+
+        // When
+        val resultActions = this.mockMvc.perform(
+            MockMvcRequestBuilders.get(ROLES_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, bearerToken)
+        )
+
+        // Then
+        resultActions.andDo(print())
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    @DisplayName("API:[403]권한 목록 조회")
+    fun roles_Fail_CauseNoCredentials() {
+        // When
+        val resultActions = this.get(ROLES_URL)
+
+        // Then TODO 자격증명 없는 요청의 403 응답 구조(timestamp, message, etc) 처리
+        resultActions.andDo(print())
+            .andExpect(status().isForbidden)
     }
 }
