@@ -3,6 +3,7 @@ package io.example.board.config.security.jwt.certification
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.example.board.config.security.jwt.certification.VerifyResult.Companion.mapFor
+import io.example.board.domain.vo.login.LoginUserAdapter
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
@@ -39,20 +40,26 @@ class TokenUtils : InitializingBean {
         }
     }
 
+    // TODO JWTDecodeException, SignatureVerificationException, TokenExpiredException 예외 처리
     fun verify(token: String): VerifyResult {
-        return try {
-            val verify = JWT.require(ALGORITHM).build().verify(token)
-            val claims = verify.claims
-            mapFor(true, claims)
-        } catch (ex: Exception) {
-            val decode = JWT.decode(token)
-            val claims = decode.claims
-            mapFor(false, claims)
-        }
+        val verify = JWT.require(ALGORITHM).build().verify(token)
+        val claims = verify.claims
+        return mapFor(true, claims)
+
+//        return try {
+//            val verify = JWT.require(ALGORITHM).build().verify(token)
+//            val claims = verify.claims
+//            mapFor(true, claims)
+//        } catch (ex: Exception) {
+//            val decode = JWT.decode(token)
+//            val claims = decode.claims
+//            mapFor(false, claims)
+//        }
     }
 
     fun getAuthentication(token: String): Authentication {
         val verifyResult = verify(token)
-        return UsernamePasswordAuthenticationToken(verifyResult.username, null, verifyResult.authorities)
+        val loginUserAdapter = LoginUserAdapter(verifyResult.username, verifyResult.authorities)
+        return UsernamePasswordAuthenticationToken(loginUserAdapter, null, loginUserAdapter.authorities)
     }
 }
