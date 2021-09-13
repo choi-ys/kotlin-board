@@ -18,11 +18,11 @@ private val logger = KotlinLogging.logger { }
 class ExceptionAdvice<T> {
 
     // unexpected Exception
-    @ExceptionHandler(RuntimeException::class)
-    fun exceptionHandler(exception: RuntimeException): ResponseEntity<*> {
-        logger.info("[{}][{}][{}]", exception.javaClass.name, exception.localizedMessage, exception.stackTrace)
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예기치 못한 오류가 발생하였습니다.")
-    }
+//    @ExceptionHandler(RuntimeException::class)
+//    fun exceptionHandler(exception: RuntimeException): ResponseEntity<*> {
+//        logger.info("[{}][{}][{}]", exception.javaClass.name, exception.localizedMessage, exception.stackTrace)
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예기치 못한 오류가 발생하였습니다.")
+//    }
 
     // expected Exception
     @ExceptionHandler(CommonException::class)
