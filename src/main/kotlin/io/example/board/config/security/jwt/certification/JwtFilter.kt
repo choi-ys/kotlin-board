@@ -15,13 +15,17 @@ class JwtFilter(
 
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         val token = tokenUtils.resolve(request as HttpServletRequest)
-        if("" != token){
+        if ("" != token) {
             val verifyResult = tokenUtils.verify(token)
             if (verifyResult.success) {
-                SecurityContextHolder.getContext().authentication = token?.let {
-                    tokenUtils.getAuthentication(it)
+                if (verifyResult.use == TokenType.ACCESS.name) {
+                    val authentication = tokenUtils.getAuthentication(token)
+                    SecurityContextHolder.getContext().authentication = authentication
                 }
             }
+        } else {
+            // TODO HeaderWriterFilter, SecurityContextHolderAwareRequestFilter에서 해당 filter가 모두 동작 되는 현상 수정
+            logger.debug("HeaderWriterFilter, SecurityContextHolderAwareRequestFilter에서 해당 filter가 모두 동작 되는 현상")
         }
 
         chain.doFilter(request, response)
