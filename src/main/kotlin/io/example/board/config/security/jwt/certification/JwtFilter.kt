@@ -18,10 +18,8 @@ class JwtFilter(
         if ("" != token) {
             val verifyResult = tokenUtils.verify(token)
             if (verifyResult.success) {
-                if (verifyResult.use == TokenType.ACCESS.name) {
-                    val authentication = tokenUtils.getAuthentication(token)
-                    SecurityContextHolder.getContext().authentication = authentication
-                }
+                val authentication = tokenUtils.getAuthentication(token)
+                SecurityContextHolder.getContext().authentication = authentication
             }
         } else {
             // TODO HeaderWriterFilter, SecurityContextHolderAwareRequestFilter에서 해당 filter가 모두 동작 되는 현상 수정
