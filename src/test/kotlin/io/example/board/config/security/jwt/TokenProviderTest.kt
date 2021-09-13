@@ -52,7 +52,7 @@ internal class TokenProviderTest {
             { assertEquals(accessTokenVerifyResult.username, member.email) },
             { assertEquals(refreshTokenVerifyResult.username, accessTokenVerifyResult.username) },
             { assertTrue(accessTokenVerifyResult.authorities!!.containsAll(member.mapToSimpleGrantedAuthority())) },
-            { assertEquals(refreshTokenVerifyResult.authorities, null) },
+            { assertTrue(refreshTokenVerifyResult.authorities!!.containsAll(member.mapToSimpleGrantedAuthority())) },
             {
                 assertEquals(
                     LocalDateTime.now().plusMinutes(10).format(ofPattern),

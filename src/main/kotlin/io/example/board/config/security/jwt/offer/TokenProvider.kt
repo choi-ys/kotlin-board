@@ -54,7 +54,7 @@ class TokenProvider : InitializingBean {
             .withSubject(SUBJECT)
             .withAudience(AUDIENCE)
             .withIssuedAt(Date(currentTimeMillis))
-            .withExpiresAt(Date(currentTimeMillis + ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM!!))
+            .withExpiresAt(Date(currentTimeMillis + ACCESS_TOKEN_VALIDITY_IN_SECONDS_TERM!! * 1000))
             .withClaim(ClaimKey.USE.value, TokenType.ACCESS.name)
             .withClaim(ClaimKey.USERNAME.value, userDetails.username)
             .withClaim(ClaimKey.AUTHORITIES.value, userDetails.authorities.joinToString(","))
@@ -67,9 +67,10 @@ class TokenProvider : InitializingBean {
             .withSubject(SUBJECT)
             .withAudience(AUDIENCE)
             .withIssuedAt(Date(currentTimeMillis))
-            .withExpiresAt(Date(currentTimeMillis + REFRESH_TOKEN_VALIDITY_IN_SECONDS_TERM!!))
+            .withExpiresAt(Date(currentTimeMillis + REFRESH_TOKEN_VALIDITY_IN_SECONDS_TERM!! * 1000))
             .withClaim(ClaimKey.USE.value, TokenType.REFRESH.name)
             .withClaim(ClaimKey.USERNAME.value, userDetails.username)
+            .withClaim(ClaimKey.AUTHORITIES.value, userDetails.authorities.joinToString(","))
             .sign(Algorithm.HMAC256(SIGNATURE))
     }
 }
