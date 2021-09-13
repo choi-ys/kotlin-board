@@ -1,6 +1,8 @@
 package io.example.board.filter
 
+import io.example.board.domain.vo.login.LoginUserAdapter
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
@@ -46,7 +48,17 @@ class LoggingFilter : Filter {
          */
         httpServletResponse.copyBodyToResponse()
 
-        logger.info("[Request ::] URI: [{}], Body: {}", requestUri, requestContent)
-        logger.info("[Response ::] Status: [{}], Body: {}", responseStatus, responseContent)
+        val authentication = SecurityContextHolder.getContext().authentication
+        logger.info("*********************************************")
+        logger.info(
+            "** [Request ::] URI: [{}], Body: {}, Authentication = [ip: {}, principal: {}, authorities: {}]",
+            requestUri,
+            requestContent,
+            httpServletRequest.remoteAddr,
+            authentication.principal,
+            authentication.authorities
+        )
+        logger.info("** [Response ::] Status: [{}], Body: {}", responseStatus, responseContent)
+        logger.info("*********************************************")
     }
 }
