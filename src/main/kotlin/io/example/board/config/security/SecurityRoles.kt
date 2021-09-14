@@ -4,30 +4,29 @@ import org.springframework.http.HttpMethod
 
 enum class SecurityRoles(private val matchers: List<AuthRequest>) {
     NONE(listOf(
-            AuthRequest(
-                HttpMethod.GET, listOf(
-                    "/index"
-                )),
-            AuthRequest(
-                HttpMethod.POST, listOf(
-                    "/member/signup", "/login"
-                ))
+        AuthRequest(
+            HttpMethod.GET, listOf(
+                "/index"
+            )),
+        AuthRequest(
+            HttpMethod.POST, listOf(
+                "/member/signup", "/login"
+            ))
     )),
     MEMBER(
         listOf(
             AuthRequest(
                 HttpMethod.GET, listOf(
-                    "/member/roles"
+                    "/member/roles", "/post"
                 )),
             AuthRequest(
                 HttpMethod.POST, listOf(
-                    "/refresh"
+                    "/refresh", "/post",
                 )),
-    ));
+        ));
 
-    fun patterns(method: HttpMethod): Array<String> {
-        return matchers.find { it.method == method }?.patterns?.toTypedArray() ?: arrayOf()
-    }
+    fun patterns(method: HttpMethod): Array<String> =
+        matchers.find { it.method == method }?.patterns?.toTypedArray() ?: arrayOf()
 }
 
 data class AuthRequest(
