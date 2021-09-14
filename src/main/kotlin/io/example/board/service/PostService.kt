@@ -7,8 +7,11 @@ import io.example.board.domain.dto.response.common.Error
 import io.example.board.domain.vo.login.LoginUser
 import io.example.board.repository.MemberRepository
 import io.example.board.repository.PostRepository
+import io.example.board.service.listener.PostEvent
+import io.example.board.service.listener.PostEventPublisher
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
+import javax.swing.event.DocumentEvent
 
 /**
  * @author : choi-ys
@@ -20,6 +23,7 @@ private val logger = KotlinLogging.logger {}
 class PostService(
     private val memberRepository: MemberRepository,
     private val postRepository: PostRepository,
+    private val postEventPublisher: PostEventPublisher,
 ) {
     fun post(postRequest: PostRequest, loginUser: LoginUser): PostResponse {
         val member = memberRepository.findByEmail(loginUser.email).orElseThrow() {
@@ -27,7 +31,9 @@ class PostService(
             throw CommonException(Error(loginUser, errorMessage))
         }
         val savedPost = postRepository.save(postRequest.toEntity(member))
-        return PostResponse.mapFor(savedPost, member)
+        val postResponse = PostResponse.mapFor(savedPost, member)
+        postEventPublisher.notifyPosting(PostEvent(postResponse = postResponse, type = DocumentEvent.EventType.INSERT))
+        return postResponse
     }
 
     fun loadPostById(postId: Long, loginUser: LoginUser): PostResponse {

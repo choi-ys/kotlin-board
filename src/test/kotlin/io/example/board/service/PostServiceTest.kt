@@ -8,6 +8,7 @@ import io.example.board.domain.entity.rdb.post.Post
 import io.example.board.domain.vo.login.LoginUser
 import io.example.board.repository.MemberRepository
 import io.example.board.repository.PostRepository
+import io.example.board.service.listener.PostEventPublisher
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -33,6 +34,9 @@ internal class PostServiceTest : MockingTestConfig() {
 
     @Mock
     lateinit var postRepository: PostRepository
+
+    @Mock
+    lateinit var postEventPublisher: PostEventPublisher
 
     @InjectMocks
     lateinit var postService: PostService
