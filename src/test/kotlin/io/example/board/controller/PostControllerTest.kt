@@ -73,4 +73,44 @@ internal class PostControllerTest : IntegrationTestConfig() {
         resultActions.andDo(print())
             .andExpect(status().isForbidden)
     }
+
+    @Test
+    @DisplayName("API:[200]게시글 조회")
+    fun postDetail() {
+        // Given
+        val savedMember = memberGenerator.savedMember()
+        val savedPost = postGenerator.savedPost(savedMember)
+
+        val bearerToken = TokenGenerator.makeBearerToken(tokenGenerator.generateToken(savedMember).accessToken)
+
+        // When
+        val resultActions = this.mockMvc.perform(
+            MockMvcRequestBuilders.get(POST_URL + "/" + savedPost.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, bearerToken)
+        )
+
+        // Then
+        resultActions.andDo(print())
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    @DisplayName("API:[403]게시글 조회")
+    fun postDetail_Fail_CauseNoCredentials() {
+        // Given
+        val savedPost = postGenerator.savedPost()
+
+        // When
+        val resultActions = this.mockMvc.perform(
+            MockMvcRequestBuilders.get(POST_URL + "/" + savedPost.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+
+        // Then
+        resultActions.andDo(print())
+            .andExpect(status().isForbidden)
+    }
 }

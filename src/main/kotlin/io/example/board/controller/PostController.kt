@@ -24,4 +24,8 @@ class PostController(private val postService: PostService) {
     @PostMapping
     fun post(@Valid @RequestBody postRequest: PostRequest, @CurrentUser loginUser: LoginUser) =
         ResponseEntity.ok(postService.post(postRequest, loginUser))
+
+    @GetMapping("{id}")
+    fun postDetail(@PathVariable("id") postId: Long, @CurrentUser loginUser: LoginUser) =
+        ResponseEntity.ok(postService.loadPostById(postId, loginUser))
 }
