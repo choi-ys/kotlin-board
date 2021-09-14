@@ -17,8 +17,8 @@ internal class PostTest {
     fun save() {
         // Given
         val member = MemberGenerator.member()
-        val title = "게시판 제목"
-        val content = "게시판 본문"
+        val title = "게시글 제목"
+        val content = "게시글 본문"
         val post = Post(title = title, content = content, member = member)
 
         // When
@@ -39,9 +39,9 @@ internal class PostTest {
     @DisplayName("게시글 제목 변경")
     fun updateTitle() {
         // Given
-        val title = "게시판 제목"
-        val newTitle = "수정된 게시판 제목"
-        val content = "게시판 본문"
+        val title = "게시글 제목"
+        val newTitle = "수정된 게시글 제목"
+        val content = "게시글 본문"
         val member = MemberGenerator.member()
         val post = Post(title = title, content = content, member = member)
 
@@ -51,7 +51,7 @@ internal class PostTest {
         // Then
         assertAll(
             { assertEquals(post.id, 0L) },
-            { assertEquals(post.title, newTitle, "게시판 제목의 변경 여부를 확인") },
+            { assertEquals(post.title, newTitle, "게시글 제목의 변경 여부를 확인") },
             { assertEquals(post.content, content) },
             { assertEquals(post.viewCount, 0L) },
             { assertEquals(post.display, true, "생성자에서 제외된 전시 항목의 기본 전시 여부 항목을 확인") },
