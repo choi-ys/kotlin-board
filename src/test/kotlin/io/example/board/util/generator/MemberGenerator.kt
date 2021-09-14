@@ -2,6 +2,7 @@ package io.example.board.util.generator
 
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.vo.login.LoginUser
 import io.example.board.repository.MemberRepository
 import org.junit.jupiter.api.Disabled
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,5 +28,7 @@ class MemberGenerator {
         fun member() = Member(name, email, password, nickname)
 
         fun signupRequest() = SignupRequest(name, email, password, nickname)
+
+        fun loginUser() = LoginUser(email, member().mapToSimpleGrantedAuthority())
     }
 }
