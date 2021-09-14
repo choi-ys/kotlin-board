@@ -5,12 +5,12 @@ import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.domain.entity.redis.MailCache
 import io.example.board.repository.MailCacheRepository
 import io.example.board.repository.MemberRepository
 import io.example.board.util.generator.MemberGenerator
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
@@ -83,6 +83,66 @@ class MemberServiceTest : MockingTestConfig() {
         }
         verify(memberRepository, times(1)).existsByEmail(signupRequest.email)
         assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
+    }
+
+    @Test
+    @DisplayName("회원 권한 추가")
+    fun addRoles() {
+        // Given
+        val member = MemberGenerator.member()
+        val additionRoles = setOf(MemberRole.ADMIN)
+        given(memberRepository.findById(member.id)).willReturn(Optional.of(member))
+
+        // When
+        memberService.addRoles(additionRoles, member.id)
+
+        // Then
+        verify(memberRepository, times(1)).findById(member.id)
+        assertTrue(member.roles.containsAll(additionRoles))
+    }
+
+    @Test
+    @DisplayName("회원 권한 삭제")
+    fun removalRoles() {
+        // Given
+        val member = MemberGenerator.member()
+        member.addRoles(setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN))
+        val removalRoles = setOf(MemberRole.MEMBER)
+
+        given(memberRepository.findById(member.id)).willReturn(Optional.of(member))
+
+        // When
+        memberService.removeRoles(removalRoles, member.id)
+
+        // Then
+        verify(memberRepository, times(1)).findById(member.id)
+        assertAll(
+            { assertFalse(member.roles.containsAll(removalRoles)) }
+        )
+    }
+
+    @Test
+    @DisplayName("회원 권한 삭제")
+    fun removalRoles_Fail_CauseAtLeastOneRoleMustExistException() {
+        // Given
+        val member = MemberGenerator.member()
+        val removalRoles = setOf(MemberRole.MEMBER)
+
+        given(memberRepository.findById(member.id)).willReturn(Optional.of(member))
+
+        // When
+        assertThrows(IllegalArgumentException::class.java) {
+            memberService.removeRoles(removalRoles, member.id)
+        }.let {
+            assertEquals(it.javaClass.simpleName, IllegalArgumentException::class.java.simpleName)
+            assertEquals(it.message, "최소 하나 이상의 권한이 존재해야 합니다.")
+        }
+
+        // Then
+        verify(memberRepository, times(1)).findById(member.id)
+        assertAll(
+            { assertTrue(member.roles.containsAll(removalRoles)) }
+        )
     }
 
     @Test

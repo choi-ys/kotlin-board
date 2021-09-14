@@ -1,11 +1,12 @@
 package io.example.board.service
 
 import io.example.board.aspect.exception.CommonException
-import io.example.board.domain.dto.response.common.Error
 import io.example.board.domain.dto.request.MemberCertifyRequest
 import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.dto.response.SignupResponse
+import io.example.board.domain.dto.response.common.Error
 import io.example.board.domain.entity.rdb.member.Member
+import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.domain.entity.rdb.member.MemberStatus
 import io.example.board.domain.entity.redis.MailCache
 import io.example.board.repository.MailCacheRepository
@@ -18,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional
 private val logger = KotlinLogging.logger { }
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 class MemberService(
     private val memberRepository: MemberRepository,
     private val passwordEncoder: PasswordEncoder,
     private val mailService: MailService,
-    private val mailCacheRepository: MailCacheRepository
+    private val mailCacheRepository: MailCacheRepository,
 ) {
 
     /**
@@ -35,7 +36,6 @@ class MemberService(
      *     <li>비밀번호 암호화
      * </ul>
      */
-    @Transactional
     fun signup(signupRequest: SignupRequest): SignupResponse {
         if (memberRepository.existsByEmail(signupRequest.email)) {
             val errorMessage = "이미 존재하는 이메일 입니다."
@@ -57,6 +57,24 @@ class MemberService(
             email = savedMember.email,
             nickname = savedMember.nickname
         )
+    }
+
+    fun addRoles(additionRoles: Set<MemberRole>, memberId: Long): Set<MemberRole> {
+        val member = memberRepository.findById(memberId).orElseThrow() {
+            val errorMessage = "요청에 해당하는 사용자가 없습니다."
+            throw CommonException(Error(memberId, errorMessage))
+        }
+        member.addRoles(additionRoles)
+        return member.roles
+    }
+
+    fun removeRoles(removalRoles: Set<MemberRole>, memberId: Long): Set<MemberRole> {
+        val member = memberRepository.findById(memberId).orElseThrow() {
+            val errorMessage = "요청에 해당하는 사용자가 없습니다."
+            throw CommonException(Error(memberId, errorMessage))
+        }
+        member.removeRoles(removalRoles)
+        return member.roles
     }
 
     fun receiptCertify(id: Long): MailCache {
