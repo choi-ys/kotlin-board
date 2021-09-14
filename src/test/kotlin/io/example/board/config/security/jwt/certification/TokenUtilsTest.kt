@@ -103,12 +103,13 @@ internal class TokenUtilsTest {
             .sign(Algorithm.HMAC256(SIGNATURE))
 
         // When & Then
-        val expected = assertThrows(SignatureVerificationException::class.java) {
+        assertThrows(SignatureVerificationException::class.java) {
             tokenUtils.verify(jwt)
         }.let {
             assertEquals(it::class.java.simpleName, SignatureVerificationException::class.java.simpleName)
             assertTrue(
-                it.message?.contains("The Token's Signature resulted invalid when verified using the Algorithm") ?: false,
+                it.message?.contains("The Token's Signature resulted invalid when verified using the Algorithm")
+                    ?: false,
             )
         }
     }

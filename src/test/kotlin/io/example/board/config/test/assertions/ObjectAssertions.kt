@@ -22,7 +22,7 @@ interface ObjectAssertions {
             )
         }
 
-        fun <T : Member> assertMember(entity: T, given: Member) {
+        fun assertMember(entity: Member, given: Member) {
             assertAll(
                 { assertAuditor(entity) },
                 { assertEquals(entity.id, given.id, MUST_EXIST_PK) },
@@ -33,7 +33,7 @@ interface ObjectAssertions {
             )
         }
 
-        fun <T : Post> assertPost(entity: T, given: Post) {
+        fun assertPost(entity: Post, given: Post) {
             assertAll(
                 { assertAuditor(entity) },
                 { assertEquals(entity.id, given.id) },

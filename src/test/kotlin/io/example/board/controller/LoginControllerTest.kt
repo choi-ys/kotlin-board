@@ -33,7 +33,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
     lateinit var memberService: MemberService
 
     @Test
-    @DisplayName("API:로그인")
+    @DisplayName("API:로그인[200]")
     fun login() {
         // Given
         val member = MemberGenerator.member()
@@ -63,7 +63,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:토큰 갱신")
+    @DisplayName("API:토큰 갱신[200]")
     fun refresh() {
         // Given
         val generateToken = tokenGenerator.generateToken()
@@ -81,5 +81,25 @@ internal class LoginControllerTest : IntegrationTestConfig() {
         // Then
         resultActions.andDo(print())
             .andExpect(status().isOk)
+    }
+
+    @Test
+    @DisplayName("API:토큰 갱신[403]")
+    fun refreshtest() {
+        // Given
+        val generateToken = tokenGenerator.generateToken()
+        val refreshTokenRequest = RefreshTokenRequest(generateToken.accessToken, generateToken.refreshToken)
+
+        // When
+        val resultActions = mockMvc.perform(
+            post("/refresh")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(refreshTokenRequest))
+        )
+
+        // Then
+        resultActions.andDo(print())
+            .andExpect(status().isForbidden)
     }
 }

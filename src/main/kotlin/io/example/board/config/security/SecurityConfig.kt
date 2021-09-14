@@ -16,17 +16,19 @@ import org.springframework.stereotype.Component
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Component
 class SecurityConfig(
-    private val tokenUtils: TokenUtils
+    private val tokenUtils: TokenUtils,
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http
+            .httpBasic().disable()
             .csrf().disable()
             .apply(JwtConfigurer(tokenUtils))
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
             .and()
+            //TODO 인증된 토큰을 포함한 요청이지만 SecurityRoles에 명시되지 않은 endpoint의 요청이 정상적으로 처리되는 현상 수정
             .authorizeRequests {
                 it
                     .antMatchers(GET, *SecurityRoles.NONE.patterns(GET)).permitAll()
@@ -35,5 +37,6 @@ class SecurityConfig(
                     .antMatchers(POST, *SecurityRoles.MEMBER.patterns(POST)).hasRole(MemberRole.MEMBER.name)
                     .anyRequest().authenticated()
             }
+            .apply(JwtConfigurer(tokenUtils))
     }
 }
