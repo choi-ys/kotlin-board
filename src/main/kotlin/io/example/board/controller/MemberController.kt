@@ -19,7 +19,7 @@ private val logger = KotlinLogging.logger { }
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 class MemberController(
-    private val memberService: MemberService
+    private val memberService: MemberService,
 ) {
 
     @Timer
@@ -29,5 +29,19 @@ class MemberController(
     }
 
     @GetMapping("roles")
-    fun roles(): ResponseEntity<*> =ResponseEntity.ok(MemberRole.values())
+    fun roles(): ResponseEntity<*> = ResponseEntity.ok(MemberRole.values())
+
+    @PostMapping("roles/{id}")
+    fun addRoles(
+        @PathVariable("id") memberId: Long,
+        @Valid @RequestBody additionRoles: Set<MemberRole>,
+    ) =
+        ResponseEntity.ok(memberService.addRoles(additionRoles, memberId))
+
+    @DeleteMapping("roles/{id}")
+    fun removeRoles(
+        @PathVariable("id") memberId: Long,
+        @Valid @RequestBody removalRoles: Set<MemberRole>,
+    ) =
+        ResponseEntity.ok(memberService.removeRoles(removalRoles, memberId))
 }

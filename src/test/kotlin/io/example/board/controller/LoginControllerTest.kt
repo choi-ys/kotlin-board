@@ -85,7 +85,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
 
     @Test
     @DisplayName("API:토큰 갱신[403]")
-    fun refreshtest() {
+    fun refresh_Fail_CauseNoCredentials() {
         // Given
         val generateToken = tokenGenerator.generateToken()
         val refreshTokenRequest = RefreshTokenRequest(generateToken.accessToken, generateToken.refreshToken)

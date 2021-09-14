@@ -2,6 +2,7 @@ package io.example.board.controller
 
 import io.example.board.config.test.IntegrationTestConfig
 import io.example.board.domain.dto.request.SignupRequest
+import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.util.generator.MemberGenerator
 import io.example.board.util.generator.TokenGenerator
 import org.junit.jupiter.api.DisplayName
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -102,7 +104,6 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
             .andExpect(status().`is`(415))
     }
 
-
     @Test
     @DisplayName("API:[500]회원 가입 실패(이메일 중복)")
     fun signup_Fail_CauseDuplicatedEmail() {
@@ -152,6 +153,90 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
         val resultActions = this.get(ROLES_URL)
 
         // Then TODO 자격증명 없는 요청의 403 응답 구조(timestamp, message, etc) 처리
+        resultActions.andDo(print())
+            .andExpect(status().isForbidden)
+    }
+
+    @Test
+    @DisplayName("API:[200]권한 추가")
+    fun addRoles() {
+        // Given
+        val savedMember = memberGenerator.savedMember()
+        val bearerToken = tokenGenerator.getBearerToken(savedMember)
+        val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
+
+        // When
+        val resultActions =
+            this.mockMvc.perform(post(ROLES_URL + "/" + savedMember.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, bearerToken)
+                .content(this.objectMapper.writeValueAsBytes(additionRoles))
+            )
+
+        // Then
+        resultActions.andDo(print())
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    @DisplayName("API:[403]권한 추가")
+    fun addRoles_Fail_CauseNoCredentials() {
+        // Given
+        val savedMember = memberGenerator.savedMember()
+        val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
+
+        // When
+        val resultActions =
+            this.mockMvc.perform(post(ROLES_URL + "/" + savedMember.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsBytes(additionRoles))
+            )
+
+        // Then
+        resultActions.andDo(print())
+            .andExpect(status().isForbidden)
+    }
+
+    @Test
+    @DisplayName("API:[200]권한 삭제")
+    fun removeRoles() {
+        // Given
+        val savedMember = memberGenerator.savedMember()
+        val bearerToken = tokenGenerator.getBearerToken(savedMember)
+        val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
+
+        // When
+        val resultActions =
+            this.mockMvc.perform(delete(ROLES_URL + "/" + savedMember.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, bearerToken)
+                .content(this.objectMapper.writeValueAsBytes(additionRoles))
+            )
+
+        // Then
+        resultActions.andDo(print())
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    @DisplayName("API:[403]권한 삭제")
+    fun removeRoles_Fail_CauseNoCredentials() {
+        // Given
+        val savedMember = memberGenerator.savedMember()
+        val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
+
+        // When
+        val resultActions =
+            this.mockMvc.perform(delete(ROLES_URL + "/" + savedMember.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsBytes(additionRoles))
+            )
+
+        // Then
         resultActions.andDo(print())
             .andExpect(status().isForbidden)
     }

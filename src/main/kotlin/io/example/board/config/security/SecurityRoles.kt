@@ -6,7 +6,7 @@ enum class SecurityRoles(private val matchers: List<AuthRequest>) {
     NONE(listOf(
         AuthRequest(
             HttpMethod.GET, listOf(
-                "/index"
+                "/index",
             )),
         AuthRequest(
             HttpMethod.POST, listOf(
@@ -17,11 +17,11 @@ enum class SecurityRoles(private val matchers: List<AuthRequest>) {
         listOf(
             AuthRequest(
                 HttpMethod.GET, listOf(
-                    "/member/roles", "/post"
+                    "/member/roles/**", "/post"
                 )),
             AuthRequest(
                 HttpMethod.POST, listOf(
-                    "/refresh", "/post",
+                    "/refresh", "/post", "/member/roles/**"
                 )),
         ));
 

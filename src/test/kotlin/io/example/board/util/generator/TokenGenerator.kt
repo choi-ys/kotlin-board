@@ -22,6 +22,14 @@ class TokenGenerator {
     @Autowired
     private lateinit var tokenProvider: TokenProvider
 
+    fun getBearerToken(): String {
+        return generateToken().accessToken
+    }
+
+    fun getBearerToken(savedMember: Member): String {
+        return "Bearer " + generateToken(savedMember).accessToken
+    }
+
     fun generateToken(): Token {
         val savedMember = memberGenerator.savedMember()
         val loginUserAdapter = LoginUserAdapter(savedMember.email, savedMember.mapToSimpleGrantedAuthority())
