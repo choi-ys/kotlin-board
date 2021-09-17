@@ -34,4 +34,11 @@ Test 관련 사항 정리
 - [kotlin을 이용한 bean-validation(JSR 303, 349, 380)설정 ](https://velog.io/@lsb156/SpringBoot-Kotlin%EC%97%90%EC%84%9C-Valid%EA%B0%80-%EB%8F%99%EC%9E%91%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9B%90%EC%9D%B8JSR-303-JSR-380)
 - [checkException과 UnCheckedException을 처리하는 방법](https://bcp0109.tistory.com/303)
 - [exception handling](https://www.bezkoder.com/spring-boot-restcontrolleradvice/)
- - [exception handling](https://hkoonsdiary.tistory.com/135)
+- [exception handling](https://hkoonsdiary.tistory.com/135)
+
+배포
+===
+- [[Jenkins] Jenkins - Spring Boot 프로젝트 jar 배포](https://dev-overload.tistory.com/39)
+- [Jenkins로 Spring Boot 서버 자동 배포하기 – 1. 도커와 젠킨스 설치](https://hotheadfactory.com/?p=2026)
+- [Jenkins로 Spring Boot 서버 자동 배포하기 – 2. 젠킨스에서 빌드하기](https://hotheadfactory.com/?p=2039)
+- [Jenkins로 Spring Boot 서버 자동 배포하기 – 3. 빌드한 서버 배포하기](https://hotheadfactory.com/?p=2056)
