@@ -16,7 +16,7 @@ import java.util.*
 internal class P6spySqlFormatConfigurationTest {
 
     @Test
-    @DisplayName("[casting] Timestamp -> LocalDateTime")
+    @DisplayName("[Casting]:Timestamp -> LocalDateTime")
     fun castingTimestampToLocalDateTime() {
         // Given
         val givenTimestamp = "1630264221961"
@@ -32,7 +32,7 @@ internal class P6spySqlFormatConfigurationTest {
     }
 
     @Test
-    @DisplayName("[casting] LocalDateTime <- Timestamp")
+    @DisplayName("[Casting]:LocalDateTime -> Timestamp")
     fun castingLocalDateTimeToTimestamp() {
         // Given
         val givenLocalDateTime = LocalDateTime.now()

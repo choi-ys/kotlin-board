@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
  * @author : choi-ys
  * @date : 2021/09/13 2:35 오후
  */
-@DisplayName("Controller:Post")
+@DisplayName("API:Post[Integration]")
 @Import(TokenGenerator::class, PostGenerator::class, MemberGenerator::class)
 internal class PostControllerTest : IntegrationTestConfig() {
 
@@ -35,7 +35,7 @@ internal class PostControllerTest : IntegrationTestConfig() {
     private val POST_URL = "/post"
 
     @Test
-    @DisplayName("API:[200]게시글 생성")
+    @DisplayName("[200:POST]게시글 생성")
     fun post() {
         // Given
         val title = "게시글 제목"
@@ -59,7 +59,7 @@ internal class PostControllerTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[403]게시글 생성")
+    @DisplayName("[403:POST]게시글 생성")
     fun post_Fail_CauseNoCredentials() {
         // Given
         val title = "게시글 제목"
@@ -75,7 +75,7 @@ internal class PostControllerTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[200]게시글 조회")
+    @DisplayName("[200:GET]게시글 조회")
     fun postDetail() {
         // Given
         val savedMember = memberGenerator.savedMember()
@@ -97,7 +97,7 @@ internal class PostControllerTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[403]게시글 조회")
+    @DisplayName("[403:GET]게시글 조회")
     fun postDetail_Fail_CauseNoCredentials() {
         // Given
         val savedPost = postGenerator.savedPost()

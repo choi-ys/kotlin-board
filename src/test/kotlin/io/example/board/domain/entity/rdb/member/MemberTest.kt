@@ -8,7 +8,7 @@ import org.junit.jupiter.api.assertAll
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.stream.Collectors
 
-@DisplayName("Entity: Member")
+@DisplayName("Entity:Member")
 internal class MemberTest {
 
     @Test

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableMockMvc
-@DisplayName("Controller:Index")
+@DisplayName("API:Index")
 @Transactional
 internal class IndexControllerTest {
 
@@ -28,7 +28,7 @@ internal class IndexControllerTest {
     private val INDEX = "/index"
 
     @Test
-    @DisplayName("API:목차[200]")
+    @DisplayName("[200:GET]목차")
     fun index() {
         // When
         val resultActions = mockMvc.perform(

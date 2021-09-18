@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
  * @author : choi-ys
  * @date : 2021/09/03 2:49 오후
  */
-@DisplayName("Controller:Login")
+@DisplayName("API:Login")
 @Import(TokenGenerator::class)
 internal class LoginControllerTest : IntegrationTestConfig() {
 
@@ -32,8 +32,11 @@ internal class LoginControllerTest : IntegrationTestConfig() {
     @Autowired
     lateinit var memberService: MemberService
 
+    private val LOGIN_URL = "/login"
+    private val REFRESH_URL = "/refresh"
+
     @Test
-    @DisplayName("API:로그인[200]")
+    @DisplayName("[200:GET]로그인")
     fun login() {
         // Given
         val member = MemberGenerator.member()
@@ -44,7 +47,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
 
         // When
         val resultActions = mockMvc.perform(
-            post("/login")
+            post(LOGIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(loginRequest))
@@ -63,7 +66,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:토큰 갱신[200]")
+    @DisplayName("[200:POST]토큰 갱신")
     fun refresh() {
         // Given
         val generateToken = tokenGenerator.generateToken()
@@ -71,7 +74,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
 
         // When
         val resultActions = mockMvc.perform(
-            post("/refresh")
+            post(REFRESH_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, TokenGenerator.makeBearerToken(generateToken.refreshToken))
@@ -84,7 +87,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:토큰 갱신[403]")
+    @DisplayName("[403:POST]토큰 갱신")
     fun refresh_Fail_CauseNoCredentials() {
         // Given
         val generateToken = tokenGenerator.generateToken()
@@ -92,7 +95,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
 
         // When
         val resultActions = mockMvc.perform(
-            post("/refresh")
+            post(REFRESH_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(refreshTokenRequest))

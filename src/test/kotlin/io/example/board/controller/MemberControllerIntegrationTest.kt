@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@DisplayName("Controller:Member")
+@DisplayName("API:Member[Integration]")
 @Import(MemberGenerator::class, TokenGenerator::class)
 internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
 
@@ -32,7 +32,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     private val ROLES_URL = "/member/roles"
 
     @Test
-    @DisplayName("API:[200]회원 가입")
+    @DisplayName("[200:POST]회원 가입")
     fun signup() {
         val signupRequest = MemberGenerator.signupRequest()
 
@@ -49,7 +49,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[400]회원 가입 실패(값이 없는 요청)")
+    @DisplayName("[400:POST]회원 가입 실패(값이 없는 요청)")
     fun signup_Fail_CauseNoArgument() {
         // When
         val resultAction = mockMvc.perform(
@@ -64,7 +64,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[400]회원 가입 실패(값이 옳바르지 않은 요청)")
+    @DisplayName("[400:POST]회원 가입 실패(값이 옳바르지 않은 요청)")
     fun signup_Fail_CauseInvalidArgument() {
         // Given
         val signupRequest = SignupRequest("", "", "", "")
@@ -78,7 +78,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[400]회원 가입 실패(유효하지 못한 요청)")
+    @DisplayName("[400:POST]회원 가입 실패(유효하지 못한 요청)")
     fun signup_Fail_CauseIllegalArgument() {
         val signupRequest = SignupRequest("choi-ys", "project.log.062", "password", "noel")
 
@@ -91,7 +91,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[415]회원 가입 실패(잘못된 Media Type 요청)")
+    @DisplayName("[415:POST]회원 가입 실패(잘못된 Media Type 요청)")
     fun signup_Fail_CauseInValidMimeType() {
         // When
         val resultAction = mockMvc.perform(
@@ -105,7 +105,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[500]회원 가입 실패(이메일 중복)")
+    @DisplayName("[500:POST]회원 가입 실패(이메일 중복)")
     fun signup_Fail_CauseDuplicatedEmail() {
         // Given
         val savedMember = memberGenerator.savedMember()
@@ -128,7 +128,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[200]권한 목록 조회")
+    @DisplayName("[200:GET]권한 목록 조회")
     fun roles() {
         // Given
         val bearerToken = TokenGenerator.makeBearerToken(tokenGenerator.generateToken().accessToken)
@@ -147,7 +147,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[403]권한 목록 조회")
+    @DisplayName("[403:GET]권한 목록 조회")
     fun roles_Fail_CauseNoCredentials() {
         // When
         val resultActions = this.get(ROLES_URL)
@@ -158,7 +158,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[200]권한 추가")
+    @DisplayName("[200:POST]회원 권한 추가")
     fun addRoles() {
         // Given
         val savedMember = memberGenerator.savedMember()
@@ -180,7 +180,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[403]권한 추가")
+    @DisplayName("[403:POST]회원 권한 추가")
     fun addRoles_Fail_CauseNoCredentials() {
         // Given
         val savedMember = memberGenerator.savedMember()
@@ -200,7 +200,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[200]권한 삭제")
+    @DisplayName("[200:DELETE]회원 권한 삭제")
     fun removeRoles() {
         // Given
         val savedMember = memberGenerator.savedMember()
@@ -222,7 +222,7 @@ internal class MemberControllerIntegrationTest : IntegrationTestConfig() {
     }
 
     @Test
-    @DisplayName("API:[403]권한 삭제")
+    @DisplayName("[403:DELETE]회원 권한 삭제")
     fun removeRoles_Fail_CauseNoCredentials() {
         // Given
         val savedMember = memberGenerator.savedMember()

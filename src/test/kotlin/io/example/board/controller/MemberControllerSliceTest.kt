@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@DisplayName("Controller:Member(Slice Test)")
+@DisplayName("API:Member[Slice Test]")
 @WebMvcTest(MemberController::class)
 internal class MemberControllerTest : WebMvcTestConfig() {
 
@@ -36,7 +36,7 @@ internal class MemberControllerTest : WebMvcTestConfig() {
     )
 
     @Test
-    @DisplayName("API:회원 가입")
+    @DisplayName("[200:POST]회원 가입")
     @Throws(Exception::class)
     fun signup() {
         // Given
@@ -55,7 +55,7 @@ internal class MemberControllerTest : WebMvcTestConfig() {
     }
 
     @Test
-    @DisplayName("API:회원 가입 실패(값이 옳바르지 않은 요청)")
+    @DisplayName("[400:POST]회원 가입 실패(값이 옳바르지 않은 요청)")
     fun signup_Fail_CauseInvalidArgument() {
         // Given
         val errorMessage = "이미 존재하는 이메일 입니다."
@@ -76,7 +76,7 @@ internal class MemberControllerTest : WebMvcTestConfig() {
     }
 
     @Test
-    @DisplayName("API:회원 가입 실패(유효하지 못한 요청)")
+    @DisplayName("[400:POST]회원 가입 실패(유효하지 못한 요청)")
     fun signup_Fail_CauseIllegalArgument() {
 
     }
