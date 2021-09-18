@@ -26,6 +26,7 @@ import java.util.*
 @SpringBootTest
 @Import(TokenGenerator::class)
 @Transactional
+@DisplayName("Config:TokenUtils")
 internal class TokenUtilsTest {
 
     @Autowired

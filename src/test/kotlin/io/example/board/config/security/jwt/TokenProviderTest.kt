@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter
  * @date : 2021/09/09 12:13 오후
  */
 @SpringBootTest(classes = [TokenProvider::class, TokenUtils::class])
+@DisplayName("Config:TokenProvier")
 internal class TokenProviderTest {
 
     @Autowired
