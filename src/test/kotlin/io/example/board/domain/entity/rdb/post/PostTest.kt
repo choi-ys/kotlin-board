@@ -10,6 +10,7 @@ import org.junit.jupiter.api.assertAll
  * @author : choi-ys
  * @date : 2021/09/11 12:09 오전
  */
+@DisplayName("Entity:Post")
 internal class PostTest {
 
     @Test
