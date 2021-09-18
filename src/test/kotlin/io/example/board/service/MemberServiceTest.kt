@@ -7,8 +7,8 @@ import io.example.board.domain.dto.request.SignupRequest
 import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.domain.entity.redis.MailCache
-import io.example.board.repository.MailCacheRepository
-import io.example.board.repository.MemberRepository
+import io.example.board.repository.MailCacheRepo
+import io.example.board.repository.MemberRepo
 import io.example.board.util.generator.MemberGenerator
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -36,13 +36,13 @@ class MemberServiceTest : MockingTestConfig() {
     lateinit var passwordEncoder: PasswordEncoder
 
     @Mock
-    lateinit var memberRepository: MemberRepository
+    lateinit var memberRepo: MemberRepo
 
     @Mock
     lateinit var mailService: MailService
 
     @Mock
-    lateinit var mailCacheRepository: MailCacheRepository
+    lateinit var mailCacheRepo: MailCacheRepo
 
     @InjectMocks
     private lateinit var memberService: MemberService
@@ -55,15 +55,15 @@ class MemberServiceTest : MockingTestConfig() {
         val member = MemberGenerator.member()
 
         given(passwordEncoder.encode(signupRequest.password)).willReturn("encoded password")
-        given(memberRepository.save(any(Member::class.java))).willReturn(member)
+        given(memberRepo.save(any(Member::class.java))).willReturn(member)
 
         // When
         val signupResponse = memberService.signup(signupRequest)
 
         // Then
-        verify(memberRepository, times(1)).existsByEmail(signupRequest.email)
+        verify(memberRepo, times(1)).existsByEmail(signupRequest.email)
         verify(passwordEncoder, times(1)).encode(any(String::class.java))
-        verify(memberRepository, times(1)).save(any(Member::class.java))
+        verify(memberRepo, times(1)).save(any(Member::class.java))
 
         assertEquals(signupResponse.email, signupRequest.email)
         assertEquals(signupResponse.name, signupRequest.name)
@@ -75,13 +75,13 @@ class MemberServiceTest : MockingTestConfig() {
     fun signup_duplicationEmailException() {
         // Given
         val signupRequest = MemberGenerator.signupRequest()
-        given(memberRepository.existsByEmail(signupRequest.email)).willReturn(true)
+        given(memberRepo.existsByEmail(signupRequest.email)).willReturn(true)
 
         // When & Then
         val expectedException = assertThrows(CommonException::class.java) {
             memberService.signup(signupRequest)
         }
-        verify(memberRepository, times(1)).existsByEmail(signupRequest.email)
+        verify(memberRepo, times(1)).existsByEmail(signupRequest.email)
         assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
     }
 
@@ -91,13 +91,13 @@ class MemberServiceTest : MockingTestConfig() {
         // Given
         val member = MemberGenerator.member()
         val additionRoles = setOf(MemberRole.ADMIN)
-        given(memberRepository.findById(member.id)).willReturn(Optional.of(member))
+        given(memberRepo.findById(member.id)).willReturn(Optional.of(member))
 
         // When
         memberService.addRoles(additionRoles, member.id)
 
         // Then
-        verify(memberRepository, times(1)).findById(member.id)
+        verify(memberRepo, times(1)).findById(member.id)
         assertTrue(member.roles.containsAll(additionRoles))
     }
 
@@ -109,13 +109,13 @@ class MemberServiceTest : MockingTestConfig() {
         member.addRoles(setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN))
         val removalRoles = setOf(MemberRole.MEMBER)
 
-        given(memberRepository.findById(member.id)).willReturn(Optional.of(member))
+        given(memberRepo.findById(member.id)).willReturn(Optional.of(member))
 
         // When
         memberService.removeRoles(removalRoles, member.id)
 
         // Then
-        verify(memberRepository, times(1)).findById(member.id)
+        verify(memberRepo, times(1)).findById(member.id)
         assertAll(
             { assertFalse(member.roles.containsAll(removalRoles)) }
         )
@@ -128,7 +128,7 @@ class MemberServiceTest : MockingTestConfig() {
         val member = MemberGenerator.member()
         val removalRoles = setOf(MemberRole.MEMBER)
 
-        given(memberRepository.findById(member.id)).willReturn(Optional.of(member))
+        given(memberRepo.findById(member.id)).willReturn(Optional.of(member))
 
         // When
         assertThrows(IllegalArgumentException::class.java) {
@@ -139,7 +139,7 @@ class MemberServiceTest : MockingTestConfig() {
         }
 
         // Then
-        verify(memberRepository, times(1)).findById(member.id)
+        verify(memberRepo, times(1)).findById(member.id)
         assertAll(
             { assertTrue(member.roles.containsAll(removalRoles)) }
         )
@@ -153,17 +153,17 @@ class MemberServiceTest : MockingTestConfig() {
         val certificationText = UUID.randomUUID().toString()
         val mailCache = MailCache(email = member.email, certificationText = certificationText)
 
-        given(memberRepository.findById(1L)).willReturn(Optional.of(member))
+        given(memberRepo.findById(1L)).willReturn(Optional.of(member))
         given(mailService.sendCertificationMail(member.email)).willReturn(certificationText)
-        given(mailCacheRepository.save(any(MailCache::class.java))).willReturn(mailCache)
+        given(mailCacheRepo.save(any(MailCache::class.java))).willReturn(mailCache)
 
         // When
         val certifiedResponse = memberService.receiptCertify(1L)
 
         // Then
-        verify(memberRepository, times(1)).findById(1L)
+        verify(memberRepo, times(1)).findById(1L)
         verify(mailService, times(1)).sendCertificationMail(member.email)
-        verify(mailCacheRepository, times(1)).save(mailCache)
+        verify(mailCacheRepo, times(1)).save(mailCache)
 
         assertEquals(certifiedResponse.email, mailCache.email)
         assertEquals(certifiedResponse.certificationText, mailCache.certificationText)
@@ -173,13 +173,13 @@ class MemberServiceTest : MockingTestConfig() {
     @DisplayName("회원 인증 메일 발송 실패 : 존재하지 않는 회원")
     fun receiptCertify_UsernameNotFoundException() {
         // Given
-        given(memberRepository.findById(1L)).willReturn(Optional.empty())
+        given(memberRepo.findById(1L)).willReturn(Optional.empty())
 
         // When & Then
         val expectedException = assertThrows(CommonException::class.java) {
             memberService.receiptCertify(1L)
         }
-        verify(memberRepository, times(1)).findById(any(Long::class.java))
+        verify(memberRepo, times(1)).findById(any(Long::class.java))
         assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
     }
 
@@ -189,8 +189,8 @@ class MemberServiceTest : MockingTestConfig() {
         // Given
         val member = MemberGenerator.member()
         val mailCache = MailCache(email = member.email, UUID.randomUUID().toString())
-        given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.of(member))
-        given(mailCacheRepository.findById(member.email)).willReturn(Optional.of(mailCache))
+        given(memberRepo.findById(any(Long::class.java))).willReturn(Optional.of(member))
+        given(mailCacheRepo.findById(member.email)).willReturn(Optional.of(mailCache))
 
         var memberCertifyRequest = MemberCertifyRequest(
             id = 1L,
@@ -202,8 +202,8 @@ class MemberServiceTest : MockingTestConfig() {
         val checkCertify = memberService.checkCertify(memberCertifyRequest)
 
         // Then
-        verify(memberRepository, times(1)).findById(1L)
-        verify(mailCacheRepository, times(1)).findById(member.email)
+        verify(memberRepo, times(1)).findById(1L)
+        verify(mailCacheRepo, times(1)).findById(member.email)
         assertEquals(checkCertify, true)
     }
 
@@ -211,7 +211,7 @@ class MemberServiceTest : MockingTestConfig() {
     @DisplayName("회원 인증 실패 : 잘못된 요청")
     fun checkCertify_IllegalArgumentException() {
         // Given
-        given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.empty())
+        given(memberRepo.findById(any(Long::class.java))).willReturn(Optional.empty())
 
         var memberCertifyRequest = MemberCertifyRequest(
             id = 1L,
@@ -223,7 +223,7 @@ class MemberServiceTest : MockingTestConfig() {
         val expectedException = assertThrows(CommonException::class.java) {
             memberService.checkCertify(memberCertifyRequest)
         }
-        verify(memberRepository, times(1)).findById(any(Long::class.java))
+        verify(memberRepo, times(1)).findById(any(Long::class.java))
         assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
     }
 
@@ -232,8 +232,8 @@ class MemberServiceTest : MockingTestConfig() {
     fun checkCertify_expiredAuthenticationException() {
         // Given
         val member = MemberGenerator.member()
-        given(memberRepository.findById(any(Long::class.java))).willReturn(Optional.of(member))
-        given(mailCacheRepository.findById(any(String::class.java))).willReturn(Optional.empty())
+        given(memberRepo.findById(any(Long::class.java))).willReturn(Optional.of(member))
+        given(mailCacheRepo.findById(any(String::class.java))).willReturn(Optional.empty())
 
         var memberCertifyRequest = MemberCertifyRequest(
             id = 1L,
@@ -246,8 +246,8 @@ class MemberServiceTest : MockingTestConfig() {
             memberService.checkCertify(memberCertifyRequest)
         }
 
-        verify(memberRepository, times(1)).findById(any(Long::class.java))
-        verify(mailCacheRepository, times(1)).findById(member.email)
+        verify(memberRepo, times(1)).findById(any(Long::class.java))
+        verify(mailCacheRepo, times(1)).findById(member.email)
         assertEquals(expectedException.javaClass.simpleName, CommonException::class.simpleName)
 
     }

@@ -5,7 +5,7 @@ import io.example.board.config.security.jwt.offer.TokenProvider
 import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.LoginRequest
 import io.example.board.domain.vo.login.token.Token
-import io.example.board.repository.MemberRepository
+import io.example.board.repository.MemberRepo
 import io.example.board.util.generator.MemberGenerator
 import io.example.board.util.generator.TokenGenerator
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,7 +28,7 @@ internal class LoginServiceTest : MockingTestConfig() {
     lateinit var passwordEncoder: PasswordEncoder
 
     @Mock
-    lateinit var memberRepository: MemberRepository
+    lateinit var memberRepo: MemberRepo
 
     @Mock
     lateinit var tokenProvider: TokenProvider
@@ -45,7 +45,7 @@ internal class LoginServiceTest : MockingTestConfig() {
         // Given
         val member = MemberGenerator.member()
         val loginRequest = LoginRequest(email = member.email, password = member.password)
-        given(memberRepository.findByEmail(member.email)).willReturn(Optional.of(member))
+        given(memberRepo.findByEmail(member.email)).willReturn(Optional.of(member))
         given(passwordEncoder.matches(loginRequest.password, member.password)).willReturn(true)
         given(loginService.issued(member)).willReturn(Token("access", "refresh", Date(), Date()))
 
@@ -53,7 +53,7 @@ internal class LoginServiceTest : MockingTestConfig() {
         val loginResponse = loginService.login(loginRequest)
 
         // Then
-        verify(memberRepository, times(1)).findByEmail(member.email)
+        verify(memberRepo, times(1)).findByEmail(member.email)
         verify(passwordEncoder, times(1)).matches(loginRequest.password, member.password)
 
         assertEquals(loginResponse.email, member.email)
@@ -80,14 +80,14 @@ internal class LoginServiceTest : MockingTestConfig() {
         val member = MemberGenerator.member()
         val loginRequest = LoginRequest(member.email, member.password)
 
-        given(memberRepository.findByEmail(member.email)).willReturn(Optional.of(member))
+        given(memberRepo.findByEmail(member.email)).willReturn(Optional.of(member))
 
         // When & Then
         val expectedException = assertThrows(Exception::class.java) {
             loginService.login(loginRequest)
         }
 
-        verify(memberRepository, times(1)).findByEmail(member.email)
+        verify(memberRepo, times(1)).findByEmail(member.email)
         verify(passwordEncoder, times(1)).matches(loginRequest.password, member.password)
         assertEquals(expectedException::class.java.simpleName, SecurityException::class.java.simpleName)
         assertEquals(expectedException.message, "로그인에 실패하였습니다. 로그인 정보를 다시 확인해 주세요.")

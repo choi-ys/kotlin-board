@@ -8,7 +8,7 @@ import io.example.board.domain.dto.response.LoginResponse
 import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.domain.vo.login.LoginUserAdapter
 import io.example.board.domain.vo.login.token.Token
-import io.example.board.repository.MemberRepository
+import io.example.board.repository.MemberRepo
 import mu.KotlinLogging
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -23,13 +23,13 @@ private val logger = KotlinLogging.logger { }
 @Transactional(readOnly = true)
 class LoginService(
     private val passwordEncoder: PasswordEncoder,
-    private val memberRepository: MemberRepository,
+    private val memberRepo: MemberRepo,
     private val tokenProvider: TokenProvider,
     private val tokenUtils: TokenUtils
 ) : UserDetailsService {
 
     fun login(loginRequest: LoginRequest): LoginResponse {
-        val member = memberRepository.findByEmail(loginRequest.email).orElseThrow() {
+        val member = memberRepo.findByEmail(loginRequest.email).orElseThrow() {
             logger.error("요청에 해당하는 사용자가 없습니다.")
             throw UsernameNotFoundException("요청에 해당하는 사용자가 없습니다.")
         }
@@ -42,7 +42,7 @@ class LoginService(
     }
 
     override fun loadUserByUsername(username: String): UserDetails {
-        val member = memberRepository.findByEmail(username).orElseThrow() {
+        val member = memberRepo.findByEmail(username).orElseThrow() {
             logger.error("요청에 해당하는 사용자가 없습니다.")
             throw UsernameNotFoundException("요청에 해당하는 사용자가 없습니다.")
         }

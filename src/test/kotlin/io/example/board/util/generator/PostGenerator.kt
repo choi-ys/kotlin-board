@@ -2,7 +2,7 @@ package io.example.board.util.generator
 
 import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.domain.entity.rdb.post.Post
-import io.example.board.repository.PostRepository
+import io.example.board.repository.PostRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.context.annotation.Import
@@ -19,7 +19,7 @@ class PostGenerator {
     lateinit var memberGenerator: MemberGenerator
 
     @Autowired
-    lateinit var postRepository: PostRepository
+    lateinit var postRepo: PostRepo
 
     private val title = "게시글 제목"
     private val content = "게시글 본문"
@@ -34,11 +34,11 @@ class PostGenerator {
     }
 
     fun savedPost(): Post {
-        return postRepository.saveAndFlush(post())
+        return postRepo.saveAndFlush(post())
     }
 
     fun savedPost(savedMember: Member): Post {
-        return postRepository.saveAndFlush(post(savedMember))
+        return postRepo.saveAndFlush(post(savedMember))
     }
 
 }

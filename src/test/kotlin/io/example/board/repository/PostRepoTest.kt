@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Import
  * @author : choi-ys
  * @date : 2021/09/11 2:58 오전
  */
-@DisplayName("Repository:Post")
+@DisplayName("Repo:Post")
 @Import(PostGenerator::class, MemberGenerator::class)
-internal class PostRepositoryTest : JpaTestConfig() {
+internal class PostRepoTest : JpaTestConfig() {
 
     @Autowired
     lateinit var memberGenerator: MemberGenerator
@@ -27,7 +27,7 @@ internal class PostRepositoryTest : JpaTestConfig() {
     lateinit var postGenerator: PostGenerator
 
     @Autowired
-    lateinit var postRepository: PostRepository
+    lateinit var postRepo: PostRepo
 
     @Test
     @DisplayName("게시글 객체 저장")
@@ -39,7 +39,7 @@ internal class PostRepositoryTest : JpaTestConfig() {
         val post = Post(title = title, content = content, member = member)
 
         // When
-        val expected = postRepository.saveAndFlush(post)
+        val expected = postRepo.saveAndFlush(post)
 
         // Then
         assertPost(entity = expected, given = post)
@@ -52,7 +52,7 @@ internal class PostRepositoryTest : JpaTestConfig() {
         val savedPost = postGenerator.savedPost()
 
         // When
-        val expected = postRepository.findById(savedPost.id).orElseThrow()
+        val expected = postRepo.findById(savedPost.id).orElseThrow()
 
         // Then
         assertPost(entity = expected, given = savedPost)
@@ -70,7 +70,7 @@ internal class PostRepositoryTest : JpaTestConfig() {
         flushAndClear()
 
         // Then
-        val expected = postRepository.findById(savedPost.id).orElseThrow()
+        val expected = postRepo.findById(savedPost.id).orElseThrow()
 
         assertAll(
             { assertPost(entity = expected, given = savedPost) },
@@ -85,12 +85,12 @@ internal class PostRepositoryTest : JpaTestConfig() {
         val savedPost = postGenerator.savedPost()
 
         // When
-        postRepository.delete(savedPost)
+        postRepo.delete(savedPost)
         flushAndClear()
 
         // Then
         assertThrows(NoSuchElementException::class.java) {
-            postRepository.findById(savedPost.id).orElseThrow()
+            postRepo.findById(savedPost.id).orElseThrow()
         }
     }
 
@@ -104,7 +104,7 @@ internal class PostRepositoryTest : JpaTestConfig() {
         flushAndClear()
 
         // When
-        val expected = postRepository.findByIdAndMember(postId, member).orElseThrow()
+        val expected = postRepo.findByIdAndMember(postId, member).orElseThrow()
 
         // Then
         assertAll(

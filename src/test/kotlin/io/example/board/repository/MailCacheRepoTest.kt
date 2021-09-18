@@ -16,10 +16,11 @@ import java.util.*
 @Import(EmbeddedRedisConfig::class)
 @DataRedisTest
 @Disabled
-internal class MailCacheRepositoryTest : BaseTestConfig() {
+@DisplayName("Repo:MailCache")
+internal class MailCacheRepoTest : BaseTestConfig() {
 
     @Autowired
-    lateinit var mailCacheRepository: MailCacheRepository
+    lateinit var mailCacheRepo: MailCacheRepo
 
     @Value("\${spring.redis.host}")
     private val redisHost = ""
@@ -34,10 +35,10 @@ internal class MailCacheRepositoryTest : BaseTestConfig() {
         var mailCache = generateMailCache()
 
         // When
-        val savedMailCache = mailCacheRepository.save(mailCache)
+        val savedMailCache = mailCacheRepo.save(mailCache)
 
         // Then
-        var selectedMailCache = mailCacheRepository.findById(savedMailCache.email).orElseThrow()
+        var selectedMailCache = mailCacheRepo.findById(savedMailCache.email).orElseThrow()
         assertEquals(savedMailCache.email, selectedMailCache.email)
         assertEquals(savedMailCache.certificationText, selectedMailCache.certificationText)
     }

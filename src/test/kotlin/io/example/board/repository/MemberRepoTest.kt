@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Import
 import org.springframework.data.repository.findByIdOrNull
 
-@DisplayName("Repository:Member")
+@DisplayName("Repo:Member")
 @Import(ApplicationContextUtil::class)
-internal class MemberRepositoryTest : JpaTestConfig() {
+internal class MemberRepoTest : JpaTestConfig() {
 
     @Autowired
-    lateinit var memberRepository: MemberRepository
+    lateinit var memberRepo: MemberRepo
 
     @Test
     @DisplayName("회원 객체 저장")
@@ -27,7 +27,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         val givenMember = MemberGenerator.member()
 
         // When
-        val expected = memberRepository.save(givenMember)
+        val expected = memberRepo.save(givenMember)
         flush()
 
         // Then
@@ -42,11 +42,11 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 객체 조회")
     fun findById() {
         // Given
-        val savedMember = memberRepository.save(MemberGenerator.member())
+        val savedMember = memberRepo.save(MemberGenerator.member())
         flushAndClear()
 
         // When
-        val expected = memberRepository.findById(savedMember.id).orElseThrow()
+        val expected = memberRepo.findById(savedMember.id).orElseThrow()
 
         // Then
         assertAll(
@@ -58,7 +58,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 속성 수정")
     fun updateByDirtyChecking() {
         // Given
-        val savedMember = memberRepository.save(MemberGenerator.member())
+        val savedMember = memberRepo.save(MemberGenerator.member())
 
         val newName = "최용식"
         savedMember.updateName(newName)
@@ -66,7 +66,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
         flushAndClear()
 
         // When
-        val expected = memberRepository.findById(savedMember.id).orElseThrow()
+        val expected = memberRepo.findById(savedMember.id).orElseThrow()
 
         // Then
         assertAll(
@@ -79,25 +79,25 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 객체 삭제")
     fun delete() {
         // Given
-        val savedMember = memberRepository.save(MemberGenerator.member())
+        val savedMember = memberRepo.save(MemberGenerator.member())
 
         // When
-        memberRepository.delete(savedMember)
+        memberRepo.delete(savedMember)
         flushAndClear()
 
         // Then : check thrown exception
         assertThrows(NoSuchElementException::class.java) {
-            memberRepository.findById(savedMember.id).get()
+            memberRepo.findById(savedMember.id).get()
         }
         // Then : check query result as null
-        assertEquals(memberRepository.findByIdOrNull(savedMember.id), null)
+        assertEquals(memberRepo.findByIdOrNull(savedMember.id), null)
     }
 
     @Test
     @DisplayName("회원 권한 추가")
     fun addRoles() {
         // Given
-        val savedMember = memberRepository.saveAndFlush(MemberGenerator.member())
+        val savedMember = memberRepo.saveAndFlush(MemberGenerator.member())
         val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
 
         // When
@@ -112,7 +112,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("회원 권한 제거")
     fun removeRoles() {
         // Given
-        val savedMember = memberRepository.saveAndFlush(MemberGenerator.member())
+        val savedMember = memberRepo.saveAndFlush(MemberGenerator.member())
         val additionRoles = setOf(MemberRole.ADMIN, MemberRole.SYSTEM_ADMIN)
         savedMember.addRoles(additionRoles)
         flush()
@@ -130,7 +130,7 @@ internal class MemberRepositoryTest : JpaTestConfig() {
     @DisplayName("모든 권한 제거 시 예외")
     fun exceptionByRemoveAllRoles() {
         // Given
-        val savedMember = memberRepository.saveAndFlush(MemberGenerator.member())
+        val savedMember = memberRepo.saveAndFlush(MemberGenerator.member())
 
         // When
         val exception = assertThrows(IllegalArgumentException::class.java) {

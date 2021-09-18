@@ -6,8 +6,8 @@ import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.domain.entity.rdb.post.Post
 import io.example.board.domain.vo.login.LoginUser
-import io.example.board.repository.MemberRepository
-import io.example.board.repository.PostRepository
+import io.example.board.repository.MemberRepo
+import io.example.board.repository.PostRepo
 import io.example.board.service.listener.PostEventPublisher
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -30,10 +30,10 @@ import java.util.*
 internal class PostServiceTest : MockingTestConfig() {
 
     @Mock
-    lateinit var memberRepository: MemberRepository
+    lateinit var memberRepo: MemberRepo
 
     @Mock
-    lateinit var postRepository: PostRepository
+    lateinit var postRepo: PostRepo
 
     @Mock
     lateinit var postEventPublisher: PostEventPublisher
@@ -55,8 +55,8 @@ internal class PostServiceTest : MockingTestConfig() {
         )
 
         val loginUser = LoginUser(givenMember.email, givenMember.mapToSimpleGrantedAuthority())
-        given(memberRepository.findByEmail(givenMember.email)).willReturn(Optional.of(givenMember))
-        given(postRepository.save(any(Post::class.java))).will(AdditionalAnswers.returnsFirstArg<Any>())
+        given(memberRepo.findByEmail(givenMember.email)).willReturn(Optional.of(givenMember))
+        given(postRepo.save(any(Post::class.java))).will(AdditionalAnswers.returnsFirstArg<Any>())
 
         // When
         val postResponse = postService.post(postRequest = postRequest, loginUser = loginUser)
@@ -69,7 +69,7 @@ internal class PostServiceTest : MockingTestConfig() {
             { assertEquals(postResponse.writer.name, givenMember.name) },
             { assertEquals(postResponse.writer.nickname, givenMember.nickname) },
         )
-        verify(memberRepository, times(1)).findByEmail(givenMember.email)
-        verify(postRepository, times(1)).save(any(Post::class.java))
+        verify(memberRepo, times(1)).findByEmail(givenMember.email)
+        verify(postRepo, times(1)).save(any(Post::class.java))
     }
 }
