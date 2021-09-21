@@ -33,7 +33,7 @@ Test 관련 사항 정리
 - [Spring Exception Handling](https://bcp0109.tistory.com/303)
 - [kotlin을 이용한 bean-validation(JSR 303, 349, 380)설정 ](https://velog.io/@lsb156/SpringBoot-Kotlin%EC%97%90%EC%84%9C-Valid%EA%B0%80-%EB%8F%99%EC%9E%91%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9B%90%EC%9D%B8JSR-303-JSR-380)
 - [checkException과 UnCheckedException을 처리하는 방법](https://bcp0109.tistory.com/303)
-- [exception handling](https://www.bezkoder.com/spring-boot-restcontrolleradvice/)
+- [@RestControllerAdvice example in Spring Boot](https://www.bezkoder.com/spring-boot-restcontrolleradvice/)
 - [exception handling](https://hkoonsdiary.tistory.com/135)
 
 배포
