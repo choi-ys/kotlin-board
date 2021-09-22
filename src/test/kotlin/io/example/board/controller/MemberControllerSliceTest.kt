@@ -1,7 +1,7 @@
 package io.example.board.controller
 
 import io.example.board.aspect.exception.CommonException
-import io.example.board.config.security.jwt.certification.TokenUtils
+import io.example.board.config.security.jwt.verifier.TokenVerifier
 import io.example.board.config.test.WebMvcTestConfig
 import io.example.board.domain.dto.response.SignupResponse
 import io.example.board.domain.dto.response.common.Error
@@ -24,7 +24,7 @@ internal class MemberControllerTest : WebMvcTestConfig() {
     lateinit var memberService: MemberService
 
     @MockBean
-    lateinit var tokenUtils: TokenUtils
+    lateinit var tokenVerifier: TokenVerifier
 
     private val SIGNUP_URL = "/member/signup"
     private val signupRequest = MemberGenerator.signupRequest()

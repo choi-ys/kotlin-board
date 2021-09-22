@@ -1,7 +1,7 @@
 package io.example.board.service
 
-import io.example.board.config.security.jwt.certification.TokenUtils
-import io.example.board.config.security.jwt.offer.TokenProvider
+import io.example.board.config.security.jwt.verifier.TokenVerifier
+import io.example.board.config.security.jwt.provider.TokenProvider
 import io.example.board.config.test.MockingTestConfig
 import io.example.board.domain.dto.request.LoginRequest
 import io.example.board.domain.vo.login.token.Token
@@ -34,7 +34,7 @@ internal class LoginServiceTest : MockingTestConfig() {
     lateinit var tokenProvider: TokenProvider
 
     @Mock
-    lateinit var tokenUtils: TokenUtils
+    lateinit var tokenVerifier: TokenVerifier
 
     @InjectMocks
     lateinit var loginService: LoginService

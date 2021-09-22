@@ -1,8 +1,8 @@
-package io.example.board.config.security.jwt.certification
+package io.example.board.config.security.jwt.verifier
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.example.board.config.security.jwt.certification.VerifyResult.Companion.mapFor
+import io.example.board.config.security.jwt.verifier.VerifyResult.Companion.mapFor
 import io.example.board.domain.vo.login.LoginUserAdapter
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils
 import javax.servlet.http.HttpServletRequest
 
 @Component
-class TokenUtils : InitializingBean {
+class TokenVerifier : InitializingBean {
     @Value("\${jwt.signature}")
     private val SIGNATURE: String? = null
     private var ALGORITHM: Algorithm? = null

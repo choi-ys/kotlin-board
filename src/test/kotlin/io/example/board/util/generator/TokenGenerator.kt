@@ -1,6 +1,6 @@
 package io.example.board.util.generator
 
-import io.example.board.config.security.jwt.offer.TokenProvider
+import io.example.board.config.security.jwt.provider.TokenProvider
 import io.example.board.domain.entity.rdb.member.Member
 import io.example.board.domain.vo.login.LoginUserAdapter
 import io.example.board.domain.vo.login.token.Token

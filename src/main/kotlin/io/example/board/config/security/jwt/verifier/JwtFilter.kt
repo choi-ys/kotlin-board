@@ -1,5 +1,6 @@
-package io.example.board.config.security.jwt.certification
+package io.example.board.config.security.jwt.verifier
 
+import io.example.board.config.security.jwt.verifier.TokenVerifier
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 import javax.servlet.FilterChain
@@ -8,15 +9,15 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
 class JwtFilter(
-    private val tokenUtils: TokenUtils,
+    private val tokenVerifier: TokenVerifier,
 ) : GenericFilterBean() {
 
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
-        val token = tokenUtils.resolve(request as HttpServletRequest)
+        val token = tokenVerifier.resolve(request as HttpServletRequest)
         if ("" != token) {
-            val verifyResult = tokenUtils.verify(token)
+            val verifyResult = tokenVerifier.verify(token)
             if (verifyResult?.success ?: false) {
-                val authentication = tokenUtils.getAuthentication(token)
+                val authentication = tokenVerifier.getAuthentication(token)
                 SecurityContextHolder.getContext().authentication = authentication
             }
         } else {

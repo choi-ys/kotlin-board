@@ -1,6 +1,7 @@
-package io.example.board.config.security.jwt.certification
+package io.example.board.config.security.jwt.verifier
 
 import com.auth0.jwt.interfaces.Claim
+import io.example.board.config.security.jwt.common.ClaimKey
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.stream.Collectors
 

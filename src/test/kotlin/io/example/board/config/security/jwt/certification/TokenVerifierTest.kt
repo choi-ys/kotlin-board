@@ -5,6 +5,9 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
+import io.example.board.config.security.jwt.common.ClaimKey
+import io.example.board.config.security.jwt.common.TokenType
+import io.example.board.config.security.jwt.verifier.TokenVerifier
 import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.domain.vo.login.LoginUserAdapter
 import io.example.board.util.generator.TokenGenerator
@@ -27,13 +30,13 @@ import java.util.*
 @Import(TokenGenerator::class)
 @Transactional
 @DisplayName("Config:TokenUtils")
-internal class TokenUtilsTest {
+internal class TokenVerifierTest {
 
     @Autowired
     lateinit var tokenGenerator: TokenGenerator
 
     @Autowired
-    lateinit var tokenUtils: TokenUtils
+    lateinit var tokenVerifier: TokenVerifier
 
     @Test
     @DisplayName("정상 JWT 검증")
@@ -42,8 +45,8 @@ internal class TokenUtilsTest {
         val generateToken = tokenGenerator.generateToken()
 
         // When
-        val accessTokenVerifyResult = tokenUtils.verify(generateToken.accessToken)
-        val refreshTokenVerifyResult = tokenUtils.verify(generateToken.refreshToken)
+        val accessTokenVerifyResult = tokenVerifier.verify(generateToken.accessToken)
+        val refreshTokenVerifyResult = tokenVerifier.verify(generateToken.refreshToken)
 
         assertAll(
             { assertTrue(accessTokenVerifyResult.success) },
@@ -59,7 +62,7 @@ internal class TokenUtilsTest {
 
         // When & Then
         assertThrows(JWTDecodeException::class.java) {
-            tokenUtils.verify(invalidJsonFormat)
+            tokenVerifier.verify(invalidJsonFormat)
         }.let {
             assertEquals(it.javaClass.simpleName, JWTDecodeException::class.java.simpleName)
             assertEquals(it.message, "The token was expected to have 3 parts, but got 1.")
@@ -74,7 +77,7 @@ internal class TokenUtilsTest {
 
         // When & Then
         assertThrows(JWTDecodeException::class.java) {
-            tokenUtils.verify(inValidJsonFormat)
+            tokenVerifier.verify(inValidJsonFormat)
         }.let {
             assertEquals(it.javaClass.simpleName, JWTDecodeException::class.java.simpleName)
             assertTrue(it.message?.contains("doesn't have a valid JSON format") ?: false)
@@ -105,7 +108,7 @@ internal class TokenUtilsTest {
 
         // When & Then
         assertThrows(SignatureVerificationException::class.java) {
-            tokenUtils.verify(jwt)
+            tokenVerifier.verify(jwt)
         }.let {
             assertEquals(it::class.java.simpleName, SignatureVerificationException::class.java.simpleName)
             assertTrue(
@@ -140,7 +143,7 @@ internal class TokenUtilsTest {
         // When
         Thread.sleep(1000L)
         assertThrows(TokenExpiredException::class.java) {
-            tokenUtils.verify(jwt)
+            tokenVerifier.verify(jwt)
         }.let {
             assertEquals(it.javaClass.simpleName, TokenExpiredException::class.java.simpleName)
             assertTrue(it.message?.contains("The Token has expired") ?: false)

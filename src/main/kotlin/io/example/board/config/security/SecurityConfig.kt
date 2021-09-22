@@ -1,7 +1,7 @@
 package io.example.board.config.security
 
-import io.example.board.config.security.jwt.certification.JwtConfigurer
-import io.example.board.config.security.jwt.certification.TokenUtils
+import io.example.board.config.security.jwt.verifier.JwtConfigurer
+import io.example.board.config.security.jwt.verifier.TokenVerifier
 import io.example.board.domain.entity.rdb.member.MemberRole
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
@@ -16,14 +16,14 @@ import org.springframework.stereotype.Component
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Component
 class SecurityConfig(
-    private val tokenUtils: TokenUtils,
+    private val tokenVerifier: TokenVerifier,
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http
             .httpBasic().disable()
             .csrf().disable()
-            .apply(JwtConfigurer(tokenUtils))
+            .apply(JwtConfigurer(tokenVerifier))
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -37,6 +37,6 @@ class SecurityConfig(
                     .antMatchers(POST, *SecurityRoles.MEMBER.patterns(POST)).hasRole(MemberRole.MEMBER.name)
                     .anyRequest().authenticated()
             }
-            .apply(JwtConfigurer(tokenUtils))
+            .apply(JwtConfigurer(tokenVerifier))
     }
 }

@@ -1,7 +1,7 @@
 package io.example.board.service
 
-import io.example.board.config.security.jwt.certification.TokenUtils
-import io.example.board.config.security.jwt.offer.TokenProvider
+import io.example.board.config.security.jwt.verifier.TokenVerifier
+import io.example.board.config.security.jwt.provider.TokenProvider
 import io.example.board.domain.dto.request.LoginRequest
 import io.example.board.domain.dto.request.RefreshTokenRequest
 import io.example.board.domain.dto.response.LoginResponse
@@ -25,7 +25,7 @@ class LoginService(
     private val passwordEncoder: PasswordEncoder,
     private val memberRepo: MemberRepo,
     private val tokenProvider: TokenProvider,
-    private val tokenUtils: TokenUtils
+    private val tokenVerifier: TokenVerifier
 ) : UserDetailsService {
 
     fun login(loginRequest: LoginRequest): LoginResponse {
@@ -55,7 +55,7 @@ class LoginService(
     }
 
     fun refresh(refreshTokenRequest: RefreshTokenRequest): Token {
-        val verify = tokenUtils.verify(refreshTokenRequest.refreshToken)
+        val verify = tokenVerifier.verify(refreshTokenRequest.refreshToken)
         val userDetails = loadUserByUsername(verify.username)
         return tokenProvider.createToken(userDetails)
     }

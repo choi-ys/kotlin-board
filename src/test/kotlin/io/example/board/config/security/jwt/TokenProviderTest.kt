@@ -1,7 +1,7 @@
 package io.example.board.config.security.jwt
 
-import io.example.board.config.security.jwt.certification.TokenUtils
-import io.example.board.config.security.jwt.offer.TokenProvider
+import io.example.board.config.security.jwt.verifier.TokenVerifier
+import io.example.board.config.security.jwt.provider.TokenProvider
 import io.example.board.domain.entity.rdb.member.MemberRole
 import io.example.board.util.LocalDateTimeUtils
 import io.example.board.util.generator.MemberGenerator
@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
  * @author : choi-ys
  * @date : 2021/09/09 12:13 오후
  */
-@SpringBootTest(classes = [TokenProvider::class, TokenUtils::class])
+@SpringBootTest(classes = [TokenProvider::class, TokenVerifier::class])
 @DisplayName("Config:TokenProvider")
 internal class TokenProviderTest {
 
@@ -28,7 +28,7 @@ internal class TokenProviderTest {
     lateinit var tokenProvider: TokenProvider
 
     @Autowired
-    lateinit var tokenUtils: TokenUtils
+    lateinit var tokenVerifier: TokenVerifier
 
     @Test
     @DisplayName("토큰 생성")
@@ -42,8 +42,8 @@ internal class TokenProviderTest {
         val createdToken = tokenProvider.createToken(user)
 
         // Then
-        val accessTokenVerifyResult = tokenUtils.verify(createdToken.accessToken)
-        val refreshTokenVerifyResult = tokenUtils.verify(createdToken.refreshToken)
+        val accessTokenVerifyResult = tokenVerifier.verify(createdToken.accessToken)
+        val refreshTokenVerifyResult = tokenVerifier.verify(createdToken.refreshToken)
 
         val accessExpiredLocalDateTime = LocalDateTimeUtils.timestampToLocalDateTime(createdToken.accessExpired.time)
         val refreshExpiredLocalDateTime = LocalDateTimeUtils.timestampToLocalDateTime(createdToken.refreshExpired.time)
