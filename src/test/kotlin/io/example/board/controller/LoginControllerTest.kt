@@ -36,7 +36,7 @@ internal class LoginControllerTest : IntegrationTestConfig() {
     private val REFRESH_URL = "/refresh"
 
     @Test
-    @DisplayName("[200:GET]로그인")
+    @DisplayName("[200:POST]로그인")
     fun login() {
         // Given
         val member = MemberGenerator.member()
