@@ -35,6 +35,7 @@ Test 관련 사항 정리
 - [checkException과 UnCheckedException을 처리하는 방법](https://bcp0109.tistory.com/303)
 - [@RestControllerAdvice example in Spring Boot](https://www.bezkoder.com/spring-boot-restcontrolleradvice/)
 - [exception handling](https://hkoonsdiary.tistory.com/135)
+- [data-redis의 cacheManager를 이용한 redis entity의 기본 TTL 설정](https://www.skyer9.pe.kr/wordpress/?p=1571)
 
 배포
 ===
@@ -42,6 +43,9 @@ Test 관련 사항 정리
 - [Jenkins로 Spring Boot 서버 자동 배포하기 – 1. 도커와 젠킨스 설치](https://hotheadfactory.com/?p=2026)
 - [Jenkins로 Spring Boot 서버 자동 배포하기 – 2. 젠킨스에서 빌드하기](https://hotheadfactory.com/?p=2039)
 - [Jenkins로 Spring Boot 서버 자동 배포하기 – 3. 빌드한 서버 배포하기](https://hotheadfactory.com/?p=2056)
+  
+설계
+===
 - [RESTful API 설계 가이드](https://sanghaklee.tistory.com/57)
 - [[번역] HAL - Hypertext Application Language
   ](https://velog.io/@pop8682/%EB%B2%88%EC%97%AD-HAL-Hypertext-Application-Language)
