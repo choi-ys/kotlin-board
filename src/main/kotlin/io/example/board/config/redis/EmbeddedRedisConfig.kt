@@ -35,10 +35,15 @@ class EmbeddedRedisConfig {
     @PostConstruct
     @Throws(IOException::class)
     fun redisServer() {
-        val port = if (isRedisRunning()) findAvailablePort() else redisPort
+        var port = if (isRedisRunning()) findAvailablePort() else redisPort
         logger.info("Embedded Redis start on [{}] by [{}] port", os, port)
         redisServer = RedisServer(port)
-        redisServer!!.start()
+        try {
+            redisServer!!.start()
+        } catch (e: Exception) {
+            port = findAvailablePort()
+            redisServer = RedisServer(port)
+        }
     }
 
     private fun isRedisRunning() = isRunning(executeGrepProcessCommand(redisPort))
@@ -64,11 +69,11 @@ class EmbeddedRedisConfig {
 
         when (os) {
             OS.WINDOWS -> {
-                command = String.format("netstat -nao | find LISTEN | find %d", port);
+                command = String.format("netstat -nao | find \"LISTEN\" | find \"%d\"", port);
                 shell = arrayOf("cmd.exe", "/y", "/c", command)
             }
             else -> {
-                command = String.format("netstat -nat | grep LISTEN|grep %d", port)
+                command = String.format("netstat -nat | grep LISTEN | grep %d", port)
                 shell = arrayOf("/bin/sh", "-c", command)
             }
         }
