@@ -38,6 +38,8 @@ Test 관련 사항 정리
 - [data-redis의 cacheManager를 이용한 redis entity의 기본 TTL 설정](https://www.skyer9.pe.kr/wordpress/?p=1571)
 - [JWT + Spring Security의 Authentication 처리 과정](https://bcp0109.tistory.com/301)
 - [Spring Data JPA의 Auditing 설정](https://055055.tistory.com/29)
+- [Gradle Multi Module에서 Spring Rest Docs 사용하기](https://jojoldu.tistory.com/294)
+- [Spring Boot | REST Docs 적용하기 -> Gradle 7.x 버전 이슈 대응](https://gaemi606.tistory.com/entry/Spring-Boot-REST-Docs-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)
 
 배포
 ===
