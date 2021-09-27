@@ -36,6 +36,7 @@ Test 관련 사항 정리
 - [@RestControllerAdvice example in Spring Boot](https://www.bezkoder.com/spring-boot-restcontrolleradvice/)
 - [exception handling](https://hkoonsdiary.tistory.com/135)
 - [data-redis의 cacheManager를 이용한 redis entity의 기본 TTL 설정](https://www.skyer9.pe.kr/wordpress/?p=1571)
+- [JWT + Spring Security의 Authentication 처리 과정](https://bcp0109.tistory.com/301)
 
 배포
 ===
