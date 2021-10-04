@@ -47,6 +47,7 @@ Test 관련 사항 정리
 - [Jenkins로 Spring Boot 서버 자동 배포하기 – 1. 도커와 젠킨스 설치](https://hotheadfactory.com/?p=2026)
 - [Jenkins로 Spring Boot 서버 자동 배포하기 – 2. 젠킨스에서 빌드하기](https://hotheadfactory.com/?p=2039)
 - [Jenkins로 Spring Boot 서버 자동 배포하기 – 3. 빌드한 서버 배포하기](https://hotheadfactory.com/?p=2056)
+- [spring boot 에서 profile 사용한 application.properties 로딩](https://lejewk.github.io/springboot-gradle-spring-profiles-active/)  
   
 설계
 ===
