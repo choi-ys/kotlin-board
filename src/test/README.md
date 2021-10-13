@@ -40,6 +40,14 @@ Test 관련 사항 정리
 - [Spring Data JPA의 Auditing 설정](https://055055.tistory.com/29)
 - [Gradle Multi Module에서 Spring Rest Docs 사용하기](https://jojoldu.tistory.com/294)
 - [Spring Boot | REST Docs 적용하기 -> Gradle 7.x 버전 이슈 대응](https://gaemi606.tistory.com/entry/Spring-Boot-REST-Docs-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)
+- [jsonPath 문법](https://www.codetd.com/ko/article/6300874)
+- java Stream (map vs flatMap)
+  - [[Stream] map() flatMap()](https://wjjeong.tistory.com/42)
+  - [자바 map 메서드와 flatMap 메서드의 차이](https://madplay.github.io/post/difference-between-map-and-flatmap-methods-in-java)
+  - [[Java] Stream API의 활용 및 사용법 - 고급 (4/5)](https://mangkyu.tistory.com/115)
+  - [[Stream API] 중간 연산 - flatMap 메서드](https://dev-kani.tistory.com/33)
+  - [[ JAVA ] - 스트림과 병렬 처리(4)](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=rain483&logNo=220603319103)
+  - [Java8의 Stream reduction 사용 방법 및 예제](https://codechacha.com/ko/java8-stream-reduction/)
 
 배포
 ===
