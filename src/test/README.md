@@ -50,6 +50,12 @@ Test 관련 사항 정리
   - [Java8의 Stream reduction 사용 방법 및 예제](https://codechacha.com/ko/java8-stream-reduction/)
 - [[Spring Security] SecurityFilterChain, Filter 이중 호출 해결 :Filter disabled](https://moonsiri.tistory.com/46)
 
+빌드
+===
+ - [Jenkins Gradle 빌드 속도 개선](https://blog.riyenas.dev/41)
+ - [[Spring] Gradle build 최적화 하기](https://kangwoojin.github.io/programing/gradle-build-performance/)
+ - [[Spring] Gradle build 최적화 하기 (2)](https://kangwoojin.github.io/programing/gradle-build-performace-2/)
+
 배포
 ===
 - [[Jenkins] Jenkins - Spring Boot 프로젝트 jar 배포](https://dev-overload.tistory.com/39)
