@@ -55,6 +55,7 @@ Test 관련 사항 정리
  - [Jenkins Gradle 빌드 속도 개선](https://blog.riyenas.dev/41)
  - [[Spring] Gradle build 최적화 하기](https://kangwoojin.github.io/programing/gradle-build-performance/)
  - [[Spring] Gradle build 최적화 하기 (2)](https://kangwoojin.github.io/programing/gradle-build-performace-2/)
+ - [(Docker) Spring Boot Application Image 최적화하기](https://perfectacle.github.io/2019/04/16/spring-boot-docker-image-optimization/)
 
 배포
 ===
